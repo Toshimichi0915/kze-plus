@@ -1,9 +1,18 @@
-# Fabric Example Mod
+# KZE Plus
 
-## Setup
+KZEでのプレイをより快適にするためのMODです。
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+## 機能
 
-## License
+- プレイ中の累計取得金額を表示する機能。
+- プレイ中の累計取得経験値を表示する機能。
+- プレイ時間を表示する機能。
+- 生存者及びゾンビの人数を表示する機能。
+- スニーク時・ダッシュ時にプレイヤーを非表示にする機能。
+- 画面の明るさを向上させる機能。
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+## 前提mod
+
+なし。
+
+Fabric 1.19.4にてmodsディレクトリに入れるだけで動作します。

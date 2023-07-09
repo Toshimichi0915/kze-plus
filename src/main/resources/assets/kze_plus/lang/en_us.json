@@ -1,0 +1,9 @@
+{
+  "kze_plus.options.title": "KZE Settings",
+  "kze_plus.options.visibility_on_sneak": "Visibility On Sneak",
+  "kze_plus.options.visibility_on_sprint": "Visibility On Sprint",
+  "kze_plus.options.full_bright": "Full Bright",
+  "kze_plus.visibility.full": "Full",
+  "kze_plus.visibility.outline": "Outline",
+  "kze_plus.visibility.none": "None"
+}
