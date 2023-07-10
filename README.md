@@ -2,7 +2,7 @@
 
 KZEでのプレイをより快適にするためのMODです。
 
-![image](https://github.com/Toshimichi0915/kze-plus/assets/26406334/ac00c0bb-661b-4a73-8da5-c131dfbc3dec)
+![image](https://github.com/Toshimichi0915/kze-plus/assets/26406334/04011148-da8d-4d10-84bb-e6ab8dff69af)
 
 [ダウンロードはここから一番上のものを選択してください。](https://github.com/Toshimichi0915/kze-plus/releases)
 
