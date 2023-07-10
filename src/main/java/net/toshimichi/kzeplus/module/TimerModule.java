@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 
 public class TimerModule implements Module {
 
-    private static final Pattern CHAT_PATTERN = Pattern.compile("^[^ ]+?: ");
     private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+) *?(?:s|秒)");
     private final List<Timer> timers = new ArrayList<>();
 
@@ -56,7 +55,6 @@ public class TimerModule implements Module {
     @EventTarget
     private void addTimer(ChatEvent e) {
         String text = e.getText().getString();
-        if (!CHAT_PATTERN.matcher(text).matches()) return;
 
         Matcher matcher = TIMER_PATTERN.matcher(text);
         if (!matcher.find()) return;

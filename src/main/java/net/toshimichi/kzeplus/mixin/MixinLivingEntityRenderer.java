@@ -42,10 +42,8 @@ public class MixinLivingEntityRenderer {
 
     @Redirect(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/feature/FeatureRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/Entity;FFFFFF)V"))
     public void cancelFeatureRender(FeatureRenderer<Entity, ?> instance, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, Entity t, float f1, float f2, float f3, float f4, float f5, float f6) {
-        if (!KzeUtils.shouldHide(t)) return;
-
         KzeOptions.VisibilityMode mode = KzeUtils.getVisibilityMode();
-        if (mode != KzeOptions.VisibilityMode.FULL) return;
+        if (KzeUtils.shouldHide(t) && mode != KzeOptions.VisibilityMode.FULL) return;
 
         instance.render(matrixStack, vertexConsumerProvider, i, t, f1, f2, f3, f4, f5, f6);
     }
