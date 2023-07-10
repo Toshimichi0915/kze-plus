@@ -54,8 +54,8 @@ public class ChatModule implements Module {
         if (!matcher.find()) return;
         e.setCancelled(true);
 
-        String killer = matcher.group(1);
-        String victim = matcher.group(2);
+        String victim = matcher.group(1);
+        String killer = matcher.group(2);
         String weapon = matcher.group(3);
         killLogs.add(new KillLog(killer, victim, weapon));
 

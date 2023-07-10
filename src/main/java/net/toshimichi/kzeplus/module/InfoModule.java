@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 
 public class InfoModule implements Module {
 
-    private static final Pattern REWARD_PATTERN = Pattern.compile("》 +合計 (\\d+?)円");
-    private static final Pattern EXP_PATTERN = Pattern.compile("》 +取得パーク経験値 \\+(\\d+?) \\(ナイフ武器\\)");
+    private static final Pattern REWARD_PATTERN = Pattern.compile("》 +合計 \\+?(\\d+?)円");
+    private static final Pattern EXP_PATTERN = Pattern.compile("》 +取得パーク経験値 \\+?(\\d+?) \\(ナイフ武器\\)");
 
     private int reward;
     private int exp;
