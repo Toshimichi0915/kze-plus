@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.scoreboard.Team;
 import net.toshimichi.kzeplus.KzePlusMod;
 import net.toshimichi.kzeplus.options.KzeOptions;
+import net.toshimichi.kzeplus.options.VisibilityMode;
 
 import java.util.List;
 
@@ -53,17 +54,24 @@ public class KzeUtils {
         return true;
     }
 
-    public static KzeOptions.VisibilityMode getVisibilityMode() {
+    public static VisibilityMode getVisibilityMode() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) return KzeOptions.VisibilityMode.FULL;
-
-        KzeOptions options = KzePlusMod.getInstance().getOptions();
-
-        if (player.isSneaking()) return options.getHideOnSneak();
+        if (player == null) return VisibilityMode.FULL;
 
         GameOptions gameOptions = MinecraftClient.getInstance().options;
-        if (player.isSprinting() || gameOptions.forwardKey.isPressed() && gameOptions.sprintKey.isPressed()) return options.getHideOnSprint();
+        KzeOptions options = KzePlusMod.getInstance().getOptions();
+        VisibilityMode mode = KzePlusMod.getInstance().getDefaultVisibility();
 
-        return KzeOptions.VisibilityMode.FULL;
+        if (player.isSneaking()) {
+            VisibilityMode candidate = options.getHideOnSneak();
+            if (candidate.ordinal() > mode.ordinal()) mode = candidate;
+        }
+
+        if (player.isSprinting() || gameOptions.forwardKey.isPressed() && gameOptions.sprintKey.isPressed()) {
+            VisibilityMode candidate = options.getHideOnSprint();
+            if (candidate.ordinal() > mode.ordinal()) mode = candidate;
+        }
+
+        return mode;
     }
 }

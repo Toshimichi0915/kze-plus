@@ -2,7 +2,7 @@ package net.toshimichi.kzeplus.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.toshimichi.kzeplus.options.KzeOptions;
+import net.toshimichi.kzeplus.options.VisibilityMode;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,8 +16,8 @@ public abstract class MixinEntity {
     public void setVisibility(CallbackInfoReturnable<Boolean> cir) {
         if (!KzeUtils.shouldHide((Entity) (Object) this)) return;
 
-        KzeOptions.VisibilityMode mode = KzeUtils.getVisibilityMode();
-        if (mode == KzeOptions.VisibilityMode.FULL) return;
+        VisibilityMode mode = KzeUtils.getVisibilityMode();
+        if (mode == VisibilityMode.FULL) return;
 
         cir.setReturnValue(true);
         cir.cancel();
@@ -27,8 +27,8 @@ public abstract class MixinEntity {
     public void setInisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         if (!KzeUtils.shouldHide((Entity) (Object) this)) return;
 
-        KzeOptions.VisibilityMode mode = KzeUtils.getVisibilityMode();
-        if (mode == KzeOptions.VisibilityMode.FULL) return;
+        VisibilityMode mode = KzeUtils.getVisibilityMode();
+        if (mode == VisibilityMode.FULL) return;
         cir.setReturnValue(false);
         cir.cancel();
     }

@@ -4,6 +4,8 @@
   "package": "net.toshimichi.kzeplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "AccessorGameOptions",
+    "AccessorKeybinding",
     "MixinChatHud",
     "MixinEntity",
     "MixinInGameHud",
@@ -14,5 +16,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "MixinGameOptions"
+  ]
 }

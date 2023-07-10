@@ -8,5 +8,7 @@
   "kze_plus.options.show_kill_log": "Show Kill Log",
   "kze_plus.visibility.full": "Full",
   "kze_plus.visibility.outline": "Outline",
-  "kze_plus.visibility.none": "None"
+  "kze_plus.visibility.none": "None",
+  "kze_plus.key.categories.kze_plus": "KZE Plus",
+  "kze_plus.key.toggle_visibility": "Toggle Visibility"
 }

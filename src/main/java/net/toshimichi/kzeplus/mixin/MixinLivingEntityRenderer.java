@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
-import net.toshimichi.kzeplus.options.KzeOptions;
+import net.toshimichi.kzeplus.options.VisibilityMode;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,15 +35,15 @@ public class MixinLivingEntityRenderer {
     public void hidePlayer(LivingEntity livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if (!KzeUtils.shouldHide(livingEntity)) return;
 
-        KzeOptions.VisibilityMode mode = KzeUtils.getVisibilityMode();
-        if (mode != KzeOptions.VisibilityMode.NONE) return;
+        VisibilityMode mode = KzeUtils.getVisibilityMode();
+        if (mode != VisibilityMode.NONE) return;
         ci.cancel();
     }
 
     @Redirect(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/feature/FeatureRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/Entity;FFFFFF)V"))
     public void cancelFeatureRender(FeatureRenderer<Entity, ?> instance, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, Entity t, float f1, float f2, float f3, float f4, float f5, float f6) {
-        KzeOptions.VisibilityMode mode = KzeUtils.getVisibilityMode();
-        if (KzeUtils.shouldHide(t) && mode != KzeOptions.VisibilityMode.FULL) return;
+        VisibilityMode mode = KzeUtils.getVisibilityMode();
+        if (KzeUtils.shouldHide(t) && mode != VisibilityMode.FULL) return;
 
         instance.render(matrixStack, vertexConsumerProvider, i, t, f1, f2, f3, f4, f5, f6);
     }

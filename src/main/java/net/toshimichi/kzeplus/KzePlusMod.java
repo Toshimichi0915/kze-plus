@@ -3,7 +3,9 @@ package net.toshimichi.kzeplus;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
+import lombok.Setter;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.option.KeyBinding;
 import net.toshimichi.kzeplus.event.ClientTickEvent;
 import net.toshimichi.kzeplus.event.EventRegistry;
 import net.toshimichi.kzeplus.event.EventTarget;
@@ -12,8 +14,11 @@ import net.toshimichi.kzeplus.module.ChatModule;
 import net.toshimichi.kzeplus.module.InfoModule;
 import net.toshimichi.kzeplus.module.Module;
 import net.toshimichi.kzeplus.module.TimerModule;
+import net.toshimichi.kzeplus.module.VisibilityModule;
 import net.toshimichi.kzeplus.options.KzeOptions;
+import net.toshimichi.kzeplus.options.VisibilityMode;
 import net.toshimichi.kzeplus.utils.KzeUtils;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +31,9 @@ public class KzePlusMod implements ModInitializer {
     private static final Path CONFIG_PATH = Path.of("./kzeplus.json");
     private static final Gson GSON = new Gson();
 
+    public static final String KZE_CATEGORY = "kze_plus.key.categories.kze_plus";
+    public static final KeyBinding VISIBILITY_TOGGLE_KEY = new KeyBinding("kze_plus.key.toggle_visibility", GLFW.GLFW_KEY_V, KZE_CATEGORY);
+
     @Getter
     private static KzePlusMod instance;
 
@@ -34,6 +42,9 @@ public class KzePlusMod implements ModInitializer {
 
     @Getter
     private EventRegistry eventRegistry;
+
+    @Getter @Setter
+    private VisibilityMode defaultVisibility = VisibilityMode.FULL;
 
     private final List<Module> modules = new ArrayList<>();
     private boolean prevInKze;
@@ -63,6 +74,7 @@ public class KzePlusMod implements ModInitializer {
         modules.add(new InfoModule());
         modules.add(new TimerModule());
         modules.add(new ChatModule());
+        modules.add(new VisibilityModule());
     }
 
     public void saveOptions() {
