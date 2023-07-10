@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 
 public class TimerModule implements Module {
 
-    private static final Pattern CHAT_PATTERN = Pattern.compile(".+ 》 .+");
-    private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+) *(?:s|秒)");
+    private static final Pattern CHAT_PATTERN = Pattern.compile("^[^ ]+?: ");
+    private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+) *?(?:s|秒)");
     private final List<Timer> timers = new ArrayList<>();
 
     @Override

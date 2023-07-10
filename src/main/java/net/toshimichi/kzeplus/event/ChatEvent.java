@@ -7,4 +7,5 @@ import net.minecraft.text.Text;
 public class ChatEvent implements Event {
 
     private final Text text;
+    private boolean cancelled;
 }

@@ -26,6 +26,8 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 KzeOptions.VisibilityMode.createSimpleOption("kze_plus.options.visibility_on_sneak", options.getHideOnSneak(), options::setHideOnSneak),
                 KzeOptions.VisibilityMode.createSimpleOption("kze_plus.options.visibility_on_sprint", options.getHideOnSprint(), options::setHideOnSprint),
                 SimpleOption.ofBoolean("kze_plus.options.full_bright", options.isFullBright(), options::setFullBright),
+                SimpleOption.ofBoolean("kze_plus.options.hide_magazine_message", options.isHideMagazineMessage(), options::setHideMagazineMessage),
+                SimpleOption.ofBoolean("kze_plus.options.hide_kill_message", options.isHideKillMessage(), options::setHideKillMessage),
         };
 
         this.list = new OptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);

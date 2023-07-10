@@ -17,6 +17,8 @@ public class KzeOptions {
     private VisibilityMode hideOnSneak;
     private VisibilityMode hideOnSprint;
     private boolean fullBright;
+    private boolean hideMagazineMessage;
+    private boolean hideKillMessage;
 
     @RequiredArgsConstructor
     @Getter

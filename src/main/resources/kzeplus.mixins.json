@@ -4,11 +4,11 @@
   "package": "net.toshimichi.kzeplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "MixinChatHud",
     "MixinEntity",
     "MixinInGameHud",
     "MixinLivingEntity",
     "MixinLivingEntityRenderer",
-    "MixinMessageHandler",
     "MixinMinecraftClient",
     "MixinOptionsScreen"
   ],
