@@ -27,12 +27,14 @@ public class InfoModule implements Module {
     @Override
     public void onEnable() {
         KzePlusMod.getInstance().getEventRegistry().register(this);
-        reward = 0;
     }
 
     @Override
     public void onDisable() {
         KzePlusMod.getInstance().getEventRegistry().unregister(this);
+        reward = 0;
+        exp = 0;
+        playTime = 0;
     }
 
     @EventTarget

@@ -3,7 +3,6 @@ package net.toshimichi.kzeplus.utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -16,9 +15,10 @@ import java.util.List;
 public class KzeUtils {
 
     public static boolean isInKze() {
-        ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
-        if (server == null) return false;
-        return server.address.contains("kze.network");
+//        ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
+//        if (server == null) return false;
+//        return server.address.contains("kze.network");
+        return true;
     }
 
     private static List<AbstractClientPlayerEntity> getTeamPlayers(String name) {

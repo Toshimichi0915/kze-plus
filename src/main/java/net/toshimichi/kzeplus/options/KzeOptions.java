@@ -14,11 +14,12 @@ import java.util.function.Consumer;
 @Data
 public class KzeOptions {
 
-    private VisibilityMode hideOnSneak;
-    private VisibilityMode hideOnSprint;
-    private boolean fullBright;
-    private boolean hideMagazineMessage;
-    private boolean hideKillMessage;
+    private VisibilityMode hideOnSneak = VisibilityMode.OUTLINE;
+    private VisibilityMode hideOnSprint = VisibilityMode.OUTLINE;
+    private boolean fullBright = true;
+    private boolean hideMagazineMessage = true;
+    private boolean hideKillMessage = true;
+    private boolean showKillLog = true;
 
     @RequiredArgsConstructor
     @Getter

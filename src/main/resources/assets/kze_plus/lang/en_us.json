@@ -5,6 +5,7 @@
   "kze_plus.options.full_bright": "Full Bright",
   "kze_plus.options.hide_magazine_message": "Hide Magazine Message",
   "kze_plus.options.hide_kill_message": "Hide Kill Message",
+  "kze_plus.options.show_kill_log": "Show Kill Log",
   "kze_plus.visibility.full": "Full",
   "kze_plus.visibility.outline": "Outline",
   "kze_plus.visibility.none": "None"

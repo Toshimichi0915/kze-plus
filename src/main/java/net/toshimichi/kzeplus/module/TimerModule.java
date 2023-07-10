@@ -31,6 +31,7 @@ public class TimerModule implements Module {
     @Override
     public void onDisable() {
         KzePlusMod.getInstance().getEventRegistry().unregister(this);
+        timers.clear();
     }
 
     public Timer getTimerByName(String name) {
