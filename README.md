@@ -4,6 +4,8 @@ KZEでのプレイをより快適にするためのMODです。
 
 ![image](https://github.com/Toshimichi0915/kze-plus/assets/26406334/ac00c0bb-661b-4a73-8da5-c131dfbc3dec)
 
+[ダウンロードはここから一番上のものを選択してください。](https://github.com/Toshimichi0915/kze-plus/releases)
+
 ## 機能
 
 - プレイ中の累計取得金額を表示する機能。
