@@ -10,6 +10,7 @@ import net.toshimichi.kzeplus.event.EventTarget;
 import net.toshimichi.kzeplus.event.SimpleEventRegistry;
 import net.toshimichi.kzeplus.module.InfoModule;
 import net.toshimichi.kzeplus.module.Module;
+import net.toshimichi.kzeplus.module.TimerModule;
 import net.toshimichi.kzeplus.options.KzeOptions;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 
@@ -59,6 +60,7 @@ public class KzePlusMod implements ModInitializer {
 
         // set up modules
         modules.add(new InfoModule());
+        modules.add(new TimerModule());
     }
 
     public void saveOptions() {

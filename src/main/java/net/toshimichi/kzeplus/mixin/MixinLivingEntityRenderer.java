@@ -24,7 +24,7 @@ public class MixinLivingEntityRenderer {
 
     @Inject(method = "getRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getItemEntityTranslucentCull(Lnet/minecraft/util/Identifier;)Lnet/minecraft/client/render/RenderLayer;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void fixRenderLayer(LivingEntity livingEntity, boolean showBody, boolean translucent, boolean showOutline, CallbackInfoReturnable<@Nullable RenderLayer> cir, Identifier identifier) {
-        if (!KzeUtils.shouldHide(livingEntity)) return;
+        if (!KzeUtils.isInKze()) return;
 
         KzeOptions.VisibilityMode mode = KzeUtils.getVisibilityMode();
         if (mode == KzeOptions.VisibilityMode.FULL) return;

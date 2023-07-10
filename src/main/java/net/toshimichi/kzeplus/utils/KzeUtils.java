@@ -23,7 +23,7 @@ public class KzeUtils {
 
     private static List<AbstractClientPlayerEntity> getTeamPlayers(String name) {
         ClientWorld world = MinecraftClient.getInstance().world;
-        if (world == null) return null;
+        if (world == null) return List.of();
 
         Team team = world.getScoreboard().getTeam(name);
         if (team == null) return List.of();

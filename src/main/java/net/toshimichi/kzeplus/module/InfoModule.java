@@ -37,29 +37,23 @@ public class InfoModule implements Module {
 
     @EventTarget
     private void updateReward(ChatEvent e) {
-        if (!e.getText().getString().startsWith("》")) return;
-        Matcher matcher = REWARD_PATTERN.matcher(e.getText().getString());
+        String text = e.getText().getString();
+        if (!text.startsWith("》")) return;
+        Matcher matcher = REWARD_PATTERN.matcher(text);
         if (matcher.find()) {
-            try {
-                reward += Integer.parseInt(matcher.group(1));
-            } catch (NumberFormatException ex) {
-                // do nothing
-            }
+            reward += Integer.parseInt(matcher.group(1));
         }
 
-        matcher = EXP_PATTERN.matcher(e.getText().getString());
+        matcher = EXP_PATTERN.matcher(text);
         if (matcher.find()) {
-            try {
-                exp += Integer.parseInt(matcher.group(1));
-            } catch (NumberFormatException ex) {
-                // do nothing
-            }
+            exp += Integer.parseInt(matcher.group(1));
         }
     }
 
     @EventTarget
     private void updatePlayTime(ClientTickEvent e) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) return;
         if (!KzeUtils.getSurvivors().contains(player) && !KzeUtils.getZombies().contains(player)) return;
 
         playTime++;
