@@ -2,7 +2,7 @@
 
 KZEでのプレイをより快適にするためのMODです。
 
-![image](https://github.com/Toshimichi0915/kze-plus/assets/26406334/04011148-da8d-4d10-84bb-e6ab8dff69af)
+![image](https://github.com/Toshimichi0915/kze-plus/assets/26406334/25f43f59-9f78-4f56-8468-f465ab02a999)
 
 [ダウンロードはここから一番上のものを選択してください。](https://github.com/Toshimichi0915/kze-plus/releases)
 
@@ -17,6 +17,8 @@ KZEでのプレイをより快適にするためのMODです。
 - キルログを別ウインドウにて表示する機能。
 - 「弾丸が切れた」及びキル時のメッセージを非表示にする機能
 - プレイヤーの透明度を変更する機能 (デフォルトVキー)
+- マガジンの残弾数を表示する機能
+- リロードの残り時間を表示する機能
 
 ## 前提mod
 
