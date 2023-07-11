@@ -15,6 +15,7 @@ import net.toshimichi.kzeplus.module.InfoModule;
 import net.toshimichi.kzeplus.module.Module;
 import net.toshimichi.kzeplus.module.TimerModule;
 import net.toshimichi.kzeplus.module.VisibilityModule;
+import net.toshimichi.kzeplus.module.WeaponInfoModule;
 import net.toshimichi.kzeplus.options.KzeOptions;
 import net.toshimichi.kzeplus.options.VisibilityMode;
 import net.toshimichi.kzeplus.utils.KzeUtils;
@@ -75,6 +76,7 @@ public class KzePlusMod implements ModInitializer {
         modules.add(new TimerModule());
         modules.add(new ChatModule());
         modules.add(new VisibilityModule());
+        modules.add(new WeaponInfoModule());
     }
 
     public void saveOptions() {
