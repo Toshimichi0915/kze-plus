@@ -104,15 +104,13 @@ public class WeaponInfoModule implements Module {
     private String getWeaponStatus(WeaponContext context) {
         WeaponStatus status = context.getWeaponStatus();
         if (status == null) return "";
-        StringBuilder builder = new StringBuilder(status.getName());
-        builder.append(": ");
-        builder.append(status.getCurrentAmmo());
-        builder.append("/");
-        builder.append(context.getWeaponInfo().getMagazineSize());
-        builder.append(" (");
-        builder.append(status.getRemainingAmmo());
-        builder.append(")");
-        return builder.toString();
+        return status.getName() + ": " +
+                status.getCurrentAmmo() +
+                "/" +
+                context.getWeaponInfo().getMagazineSize() +
+                " (" +
+                status.getRemainingAmmo() +
+                ")";
     }
 
     private void drawWeaponStatus(MatrixStack matrices) {
@@ -123,14 +121,12 @@ public class WeaponInfoModule implements Module {
                 textRenderer.getWidth(getWeaponStatus(subWeaponContext))
         );
 
-        int x = MinecraftClient.getInstance().getWindow().getScaledWidth() - weaponContextLength - 30;
-
         if (weaponContextLength > 0) {
-            InGameHud.fill(matrices, x, 20, x + weaponContextLength + 10, 50, 0x80000000);
+            InGameHud.fill(matrices, 20, 100, weaponContextLength + 30, 130, 0x80000000);
         }
 
-        textRenderer.drawWithShadow(matrices, getWeaponStatus(mainWeaponContext), x + 5, 25, 0xffffff);
-        textRenderer.drawWithShadow(matrices, getWeaponStatus(subWeaponContext), x + 5, 35, 0xffffff);
+        textRenderer.drawWithShadow(matrices, getWeaponStatus(mainWeaponContext), 25, 105, 0xffffff);
+        textRenderer.drawWithShadow(matrices, getWeaponStatus(subWeaponContext), 25, 115, 0xffffff);
     }
 
     private void drawReloadProgress(MatrixStack matrices, WeaponContext context) {

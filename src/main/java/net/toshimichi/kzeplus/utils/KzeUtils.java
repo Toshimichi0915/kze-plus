@@ -22,6 +22,39 @@ public class KzeUtils {
         return server.address.contains("kze.network");
     }
 
+    public static boolean isInGame() {
+        if (!isInKze()) return false;
+
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if (world == null) return false;
+
+        return world.getScoreboard().getTeam("sb") != null;
+    }
+
+    private static int countTeamPlayers(String name) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) return 0;
+
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if (world == null) return 0;
+
+        Team team = world.getScoreboard().getTeam(name);
+        if (team == null) return 0;
+
+        return (int) player.networkHandler.getListedPlayerListEntries()
+                .stream()
+                .filter(entry -> team.getPlayerList().contains(entry.getProfile().getName()))
+                .count();
+    }
+
+    public static int getSurvivorCount() {
+        return countTeamPlayers("e");
+    }
+
+    public static int getZombieCount() {
+        return countTeamPlayers("z");
+    }
+
     private static List<AbstractClientPlayerEntity> getTeamPlayers(String name) {
         ClientWorld world = MinecraftClient.getInstance().world;
         if (world == null) return List.of();

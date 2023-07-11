@@ -55,7 +55,7 @@ public class PlayInfoModule implements Module {
     private void updatePlayTime(ClientTickEvent e) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
-        if (!KzeUtils.getSurvivors().contains(player) && !KzeUtils.getZombies().contains(player)) return;
+        if (!KzeUtils.isInGame()) return;
 
         playTime++;
     }
@@ -64,7 +64,7 @@ public class PlayInfoModule implements Module {
     private void renderInfo(InGameHudRenderEvent e) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        InGameHud.fill(e.getMatrices(), 20, 20, 125, 60, 0x80000000);
+        InGameHud.fill(e.getMatrices(), 20, 20, 125, 90, 0x80000000);
 
         // reward
         InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "取得金額: " + reward + "円", 25, 25, 0xFFFFFF);
@@ -76,5 +76,8 @@ public class PlayInfoModule implements Module {
         Duration duration = Duration.ofSeconds(playTime / 20);
         String time = "%02d:%02d:%02d".formatted(duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart());
         InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "プレイ時間: " + time, 25, 45, 0xFFFFFF);
+
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", 25, 65, 0xFFFFFF);
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", 25, 75, 0xFFFFFF);
     }
 }

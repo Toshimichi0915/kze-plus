@@ -46,9 +46,9 @@ public class TimerInfoModule implements Module {
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        InGameHud.fill(e.getMatrices(), 20, 70, 125, 80 + timers.size() * 10, 0x80000000);
+        InGameHud.fill(e.getMatrices(), 20, 140, 125, 150 + timers.size() * 10, 0x80000000);
         for (Timer timer : timers) {
-            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, timer.toString(), 25, 75 + timers.indexOf(timer) * 10, 0xFFFFFF);
+            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, timer.toString(), 25, 145 + timers.indexOf(timer) * 10, 0xFFFFFF);
         }
     }
 
