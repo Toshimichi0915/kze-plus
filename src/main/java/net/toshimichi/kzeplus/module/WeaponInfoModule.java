@@ -91,10 +91,10 @@ public class WeaponInfoModule implements Module {
             double x4 = Math.cos(angleNext) * OUTER_CIRCLE_SIZE;
             double y4 = Math.sin(angleNext) * OUTER_CIRCLE_SIZE;
 
-            buffer.vertex(centerX + x1, centerY + y1, 0).color(1F, 1F, 1F, 1F).next();
-            buffer.vertex(centerX + x2, centerY + y2, 0).color(1F, 1F, 1F, 1F).next();
-            buffer.vertex(centerX + x3, centerY + y3, 0).color(1F, 1F, 1F, 1F).next();
-            buffer.vertex(centerX + x4, centerY + y4, 0).color(1F, 1F, 1F, 1F).next();
+            buffer.vertex(centerX + x1, centerY + y1, 0).color(0xFFFFFFFF).next();
+            buffer.vertex(centerX + x2, centerY + y2, 0).color(0xFFFFFFFF).next();
+            buffer.vertex(centerX + x3, centerY + y3, 0).color(0xFFFFFFFF).next();
+            buffer.vertex(centerX + x4, centerY + y4, 0).color(0xFFFFFFFF).next();
         }
 
         BufferRenderer.drawWithGlobalProgram(buffer.end());
