@@ -5,7 +5,7 @@ import net.toshimichi.kzeplus.event.ClientTickEvent;
 import net.toshimichi.kzeplus.event.EventTarget;
 import net.toshimichi.kzeplus.options.VisibilityMode;
 
-public class VisibilityModule implements Module {
+public class VisibiiltyToggleModule implements Module {
 
     private boolean prevPressed;
 

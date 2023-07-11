@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TimerModule implements Module {
+public class TimerInfoModule implements Module {
 
     private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+) *?(?:s|S|秒)");
     private final List<Timer> timers = new ArrayList<>();

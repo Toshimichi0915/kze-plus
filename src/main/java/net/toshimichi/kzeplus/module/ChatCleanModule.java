@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChatModule implements Module {
+public class ChatCleanModule implements Module {
 
     private static final Pattern MAGAZINE_MESSAGE_PATTERN = Pattern.compile("》[^ ]+? 弾が切れた！");
     private static final Pattern KILL_MESSAGE_PATTERN = Pattern.compile("》([^ ]+?) killed by ([^ ]+?) \\(([^ ]+?) ?\\)");

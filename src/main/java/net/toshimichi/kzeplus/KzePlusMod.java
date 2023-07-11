@@ -10,11 +10,11 @@ import net.toshimichi.kzeplus.event.ClientTickEvent;
 import net.toshimichi.kzeplus.event.EventRegistry;
 import net.toshimichi.kzeplus.event.EventTarget;
 import net.toshimichi.kzeplus.event.SimpleEventRegistry;
-import net.toshimichi.kzeplus.module.ChatModule;
-import net.toshimichi.kzeplus.module.InfoModule;
+import net.toshimichi.kzeplus.module.ChatCleanModule;
 import net.toshimichi.kzeplus.module.Module;
-import net.toshimichi.kzeplus.module.TimerModule;
-import net.toshimichi.kzeplus.module.VisibilityModule;
+import net.toshimichi.kzeplus.module.PlayInfoModule;
+import net.toshimichi.kzeplus.module.TimerInfoModule;
+import net.toshimichi.kzeplus.module.VisibiiltyToggleModule;
 import net.toshimichi.kzeplus.module.WeaponInfoModule;
 import net.toshimichi.kzeplus.options.KzeOptions;
 import net.toshimichi.kzeplus.options.VisibilityMode;
@@ -72,10 +72,10 @@ public class KzePlusMod implements ModInitializer {
         eventRegistry.register(this);
 
         // register modules
-        modules.add(new InfoModule());
-        modules.add(new TimerModule());
-        modules.add(new ChatModule());
-        modules.add(new VisibilityModule());
+        modules.add(new PlayInfoModule());
+        modules.add(new TimerInfoModule());
+        modules.add(new ChatCleanModule());
+        modules.add(new VisibiiltyToggleModule());
         modules.add(new WeaponInfoModule());
     }
 
