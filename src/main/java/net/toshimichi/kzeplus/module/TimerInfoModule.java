@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 public class TimerInfoModule implements Module {
 
+    private static final int TIMER_LIMIT = 300;
     private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+) *?(?:s|S|秒)");
     private final List<Timer> timers = new ArrayList<>();
 
@@ -59,6 +60,7 @@ public class TimerInfoModule implements Module {
         Matcher matcher = TIMER_PATTERN.matcher(text);
         if (!matcher.find()) return;
         int seconds = Integer.parseInt(matcher.group(1));
+        if (seconds > TIMER_LIMIT) return; // prevent abuse
 
         // get timer name
         int index = 1;
