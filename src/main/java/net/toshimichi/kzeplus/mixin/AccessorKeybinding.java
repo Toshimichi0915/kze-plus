@@ -13,9 +13,4 @@ public interface AccessorKeybinding {
     static Map<String, Integer> getCategoryOrderMap() {
         throw new RuntimeException();
     }
-
-    @Accessor("CATEGORY_ORDER_MAP")
-    static void setCategoryOrderMap(Map<String, Integer> categoryOrderMap) {
-        throw new RuntimeException();
-    }
 }
