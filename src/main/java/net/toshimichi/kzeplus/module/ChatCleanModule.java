@@ -113,7 +113,10 @@ public class ChatCleanModule implements Module {
             boolean didKill = player != null && killer.equals(player.getEntityName());
             boolean wasKilled = player != null && victim.equals(player.getEntityName());
 
-            return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : (infected ? ZOMBIE_COLOR : HUMAN_COLOR))).append(Text.literal(" -> ").styled(style -> style.withColor(0xFFFFFF))).append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : (!infected ? ZOMBIE_COLOR : HUMAN_COLOR)))).append(Text.literal(" (" + weapon + ")").styled(style -> style.withColor(WEAPON_COLOR)));
+            return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : (infected ? ZOMBIE_COLOR : HUMAN_COLOR)))
+                    .append(Text.literal(" -> ").styled(style -> style.withColor(0xffffff)))
+                    .append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : (!infected ? ZOMBIE_COLOR : HUMAN_COLOR))))
+                    .append(Text.literal(" (" + weapon + ")").styled(style -> style.withColor(WEAPON_COLOR)));
         }
     }
 }

@@ -25,10 +25,12 @@ import java.util.Map;
 
 public class WeaponInfoModule implements Module {
 
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
     private static final int DEG_STEP = 3;
     private static final int INNER_CIRCLE_SIZE = 3;
     private static final int OUTER_CIRCLE_SIZE = 5;
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
+
+    private static final int RELOAD_COLOR = 0xfc5454;
 
     private final Map<String, WeaponInfo> weapons = new HashMap<>();
     private final WeaponContext mainWeaponContext = new WeaponContext(0);
@@ -91,10 +93,10 @@ public class WeaponInfoModule implements Module {
             double x4 = Math.cos(angleNext) * OUTER_CIRCLE_SIZE;
             double y4 = Math.sin(angleNext) * OUTER_CIRCLE_SIZE;
 
-            buffer.vertex(centerX + x1, centerY + y1, 0).color(0xFFFFFFFF).next();
-            buffer.vertex(centerX + x2, centerY + y2, 0).color(0xFFFFFFFF).next();
-            buffer.vertex(centerX + x3, centerY + y3, 0).color(0xFFFFFFFF).next();
-            buffer.vertex(centerX + x4, centerY + y4, 0).color(0xFFFFFFFF).next();
+            buffer.vertex(centerX + x1, centerY + y1, 0).color(0xffffffff).next();
+            buffer.vertex(centerX + x2, centerY + y2, 0).color(0xffffffff).next();
+            buffer.vertex(centerX + x3, centerY + y3, 0).color(0xffffffff).next();
+            buffer.vertex(centerX + x4, centerY + y4, 0).color(0xffffffff).next();
         }
 
         BufferRenderer.drawWithGlobalProgram(buffer.end());
@@ -116,17 +118,22 @@ public class WeaponInfoModule implements Module {
     private void drawWeaponStatus(MatrixStack matrices) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
+        String main = getWeaponStatus(mainWeaponContext);
+        String sub = getWeaponStatus(subWeaponContext);
+        boolean mainReloading = mainWeaponContext.getWeaponStatus() != null && mainWeaponContext.getWeaponStatus().isReloading();
+        boolean subReloading = subWeaponContext.getWeaponStatus() != null && subWeaponContext.getWeaponStatus().isReloading();
+
         int weaponContextLength = Math.max(
-                textRenderer.getWidth(getWeaponStatus(mainWeaponContext)),
-                textRenderer.getWidth(getWeaponStatus(subWeaponContext))
+                textRenderer.getWidth(main),
+                textRenderer.getWidth(sub)
         );
 
         if (weaponContextLength > 0) {
             InGameHud.fill(matrices, 20, 100, weaponContextLength + 30, 130, 0x80000000);
         }
 
-        textRenderer.drawWithShadow(matrices, getWeaponStatus(mainWeaponContext), 25, 105, 0xffffff);
-        textRenderer.drawWithShadow(matrices, getWeaponStatus(subWeaponContext), 25, 115, 0xffffff);
+        textRenderer.drawWithShadow(matrices, main, 25, 105, mainReloading ? RELOAD_COLOR : 0xffffff);
+        textRenderer.drawWithShadow(matrices, sub, 25, 115, subReloading ? RELOAD_COLOR : 0xffffff);
     }
 
     private void drawReloadProgress(MatrixStack matrices, WeaponContext context) {

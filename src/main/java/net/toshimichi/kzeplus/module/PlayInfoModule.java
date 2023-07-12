@@ -67,17 +67,17 @@ public class PlayInfoModule implements Module {
         InGameHud.fill(e.getMatrices(), 20, 20, 125, 90, 0x80000000);
 
         // reward
-        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "取得金額: " + reward + "円", 25, 25, 0xFFFFFF);
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "取得金額: " + reward + "円", 25, 25, 0xffffff);
 
         // exp
-        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "取得経験値: " + exp, 25, 35, 0xFFFFFF);
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "取得経験値: " + exp, 25, 35, 0xffffff);
 
         // play time
         Duration duration = Duration.ofSeconds(playTime / 20);
         String time = "%02d:%02d:%02d".formatted(duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart());
-        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "プレイ時間: " + time, 25, 45, 0xFFFFFF);
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "プレイ時間: " + time, 25, 45, 0xffffff);
 
-        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", 25, 65, 0xFFFFFF);
-        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", 25, 75, 0xFFFFFF);
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", 25, 65, 0xffffff);
+        InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", 25, 75, 0xffffff);
     }
 }
