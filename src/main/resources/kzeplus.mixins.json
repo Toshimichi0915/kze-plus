@@ -8,6 +8,7 @@
     "AccessorKeybinding",
     "MixinChatHud",
     "MixinEntity",
+    "MixinGameOptions",
     "MixinInGameHud",
     "MixinLivingEntity",
     "MixinLivingEntityRenderer",
@@ -16,8 +17,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "MixinGameOptions"
-  ]
+  }
 }
