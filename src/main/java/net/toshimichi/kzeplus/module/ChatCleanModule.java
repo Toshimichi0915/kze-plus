@@ -74,6 +74,7 @@ public class ChatCleanModule implements Module {
     public void showKillLog(InGameHudRenderEvent e) {
         if (!KzePlusMod.getInstance().getOptions().isShowKillLog()) return;
         if (killLogs.isEmpty()) return;
+        if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
