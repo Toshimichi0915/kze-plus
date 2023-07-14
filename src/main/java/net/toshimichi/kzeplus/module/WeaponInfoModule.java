@@ -216,6 +216,10 @@ public class WeaponInfoModule implements Module {
             if (now.isReloading() && player.getInventory().selectedSlot == slot) {
                 reloadTicks++;
             }
+
+            if (old.isReloading() && !now.isReloading()) {
+                reloadTicks = 0;
+            }
         }
 
         private boolean isDataLoaded() {
