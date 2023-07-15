@@ -24,7 +24,7 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "isInvisibleTo", at = @At("HEAD"), cancellable = true)
-    public void setInisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+    public void setInvisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         if (!KzeUtils.shouldHide((Entity) (Object) this)) return;
 
         VisibilityMode mode = KzeUtils.getVisibilityMode();
