@@ -6,6 +6,7 @@
   "client": [
     "AccessorGameOptions",
     "AccessorKeybinding",
+    "MixinBackgroundRenderer",
     "MixinChatHud",
     "MixinEntity",
     "MixinGameOptions",

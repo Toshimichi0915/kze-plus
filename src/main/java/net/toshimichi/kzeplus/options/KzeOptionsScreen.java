@@ -26,6 +26,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 VisibilityMode.createSimpleOption("kze_plus.options.visibility_on_sneak", options.getHideOnSneak(), options::setHideOnSneak),
                 VisibilityMode.createSimpleOption("kze_plus.options.visibility_on_sprint", options.getHideOnSprint(), options::setHideOnSprint),
                 SimpleOption.ofBoolean("kze_plus.options.full_bright", options.isFullBright(), options::setFullBright),
+                SimpleOption.ofBoolean("kze_plus.options.no_fog", options.isNoFog(), options::setNoFog),
                 SimpleOption.ofBoolean("kze_plus.options.hide_magazine_message", options.isHideMagazineMessage(), options::setHideMagazineMessage),
                 SimpleOption.ofBoolean("kze_plus.options.hide_kill_message", options.isHideKillMessage(), options::setHideKillMessage),
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
