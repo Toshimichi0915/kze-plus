@@ -5,6 +5,7 @@ import lombok.Data;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
@@ -53,9 +54,19 @@ public class TimerInfoModule implements Module {
         }
     }
 
+    private String stripPlayerName(String text) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) return text;
+
+        return player.networkHandler.getPlayerList()
+                .stream()
+                .map(entry -> entry.getProfile().getName())
+                .reduce(text, (s, name) -> s.replace(name, ""));
+    }
+
     @EventTarget
     private void addTimer(ChatEvent e) {
-        String text = e.getText().getString();
+        String text = stripPlayerName(e.getText().getString());
 
         Matcher matcher = TIMER_PATTERN.matcher(text);
         if (!matcher.find()) return;
