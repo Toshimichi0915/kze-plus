@@ -6,16 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.option.KeyBinding;
-import net.toshimichi.kzeplus.event.ClientTickEvent;
-import net.toshimichi.kzeplus.event.EventRegistry;
-import net.toshimichi.kzeplus.event.EventTarget;
-import net.toshimichi.kzeplus.event.SimpleEventRegistry;
-import net.toshimichi.kzeplus.module.ChatCleanModule;
-import net.toshimichi.kzeplus.module.Module;
-import net.toshimichi.kzeplus.module.PlayInfoModule;
-import net.toshimichi.kzeplus.module.TimerInfoModule;
-import net.toshimichi.kzeplus.module.VisibiiltyToggleModule;
-import net.toshimichi.kzeplus.module.WeaponInfoModule;
+import net.toshimichi.kzeplus.events.ClientTickEvent;
+import net.toshimichi.kzeplus.events.EventRegistry;
+import net.toshimichi.kzeplus.events.EventTarget;
+import net.toshimichi.kzeplus.events.SimpleEventRegistry;
+import net.toshimichi.kzeplus.modules.ChatCleanModule;
+import net.toshimichi.kzeplus.modules.Module;
+import net.toshimichi.kzeplus.modules.PlayInfoModule;
+import net.toshimichi.kzeplus.modules.TimerInfoModule;
+import net.toshimichi.kzeplus.modules.VisibiiltyToggleModule;
+import net.toshimichi.kzeplus.modules.WeaponInfoModule;
 import net.toshimichi.kzeplus.options.KzeOptions;
 import net.toshimichi.kzeplus.options.VisibilityMode;
 import net.toshimichi.kzeplus.utils.KzeUtils;
@@ -27,7 +27,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KzePlusMod implements ModInitializer {
+public class KzePlus implements ModInitializer {
 
     private static final Path CONFIG_PATH = Path.of("./kzeplus.json");
     private static final Gson GSON = new Gson();
@@ -36,7 +36,7 @@ public class KzePlusMod implements ModInitializer {
     public static final KeyBinding VISIBILITY_TOGGLE_KEY = new KeyBinding("kze_plus.key.toggle_visibility", GLFW.GLFW_KEY_V, KZE_CATEGORY);
 
     @Getter
-    private static KzePlusMod instance;
+    private static KzePlus instance;
 
     @Getter
     private KzeOptions options;

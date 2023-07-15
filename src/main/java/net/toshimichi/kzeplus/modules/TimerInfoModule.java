@@ -1,15 +1,15 @@
-package net.toshimichi.kzeplus.module;
+package net.toshimichi.kzeplus.modules;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.toshimichi.kzeplus.KzePlusMod;
-import net.toshimichi.kzeplus.event.ChatEvent;
-import net.toshimichi.kzeplus.event.ClientTickEvent;
-import net.toshimichi.kzeplus.event.EventTarget;
-import net.toshimichi.kzeplus.event.InGameHudRenderEvent;
+import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.events.ChatEvent;
+import net.toshimichi.kzeplus.events.ClientTickEvent;
+import net.toshimichi.kzeplus.events.EventTarget;
+import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,12 +25,12 @@ public class TimerInfoModule implements Module {
 
     @Override
     public void onEnable() {
-        KzePlusMod.getInstance().getEventRegistry().register(this);
+        KzePlus.getInstance().getEventRegistry().register(this);
     }
 
     @Override
     public void onDisable() {
-        KzePlusMod.getInstance().getEventRegistry().unregister(this);
+        KzePlus.getInstance().getEventRegistry().unregister(this);
         timers.clear();
     }
 

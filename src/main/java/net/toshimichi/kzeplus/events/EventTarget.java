@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.event;
+package net.toshimichi.kzeplus.events;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

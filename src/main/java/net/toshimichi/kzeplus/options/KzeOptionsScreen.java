@@ -9,7 +9,7 @@ import net.minecraft.client.option.SimpleOption;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import net.toshimichi.kzeplus.KzePlusMod;
+import net.toshimichi.kzeplus.KzePlus;
 
 public class KzeOptionsScreen extends GameOptionsScreen {
 
@@ -21,7 +21,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
 
     @Override
     protected void init() {
-        KzeOptions options = KzePlusMod.getInstance().getOptions();
+        KzeOptions options = KzePlus.getInstance().getOptions();
         SimpleOption<?>[] arr = {
                 VisibilityMode.createSimpleOption("kze_plus.options.visibility_on_sneak", options.getHideOnSneak(), options::setHideOnSneak),
                 VisibilityMode.createSimpleOption("kze_plus.options.visibility_on_sprint", options.getHideOnSprint(), options::setHideOnSprint),
@@ -55,7 +55,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
 
     @Override
     public void close() {
-        KzePlusMod.getInstance().saveOptions();
+        KzePlus.getInstance().saveOptions();
         super.close();
     }
 }

@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.module;
+package net.toshimichi.kzeplus.modules;
 
 public interface Module {
 

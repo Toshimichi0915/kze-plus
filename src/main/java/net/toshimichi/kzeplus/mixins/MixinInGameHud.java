@@ -1,9 +1,9 @@
-package net.toshimichi.kzeplus.mixin;
+package net.toshimichi.kzeplus.mixins;
 
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
-import net.toshimichi.kzeplus.KzePlusMod;
-import net.toshimichi.kzeplus.event.InGameHudRenderEvent;
+import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,6 +14,6 @@ public class MixinInGameHud {
 
     @Inject(method = "render", at = @At("TAIL"))
     public void notifyRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        KzePlusMod.getInstance().getEventRegistry().call(new InGameHudRenderEvent(matrices, tickDelta));
+        KzePlus.getInstance().getEventRegistry().call(new InGameHudRenderEvent(matrices, tickDelta));
     }
 }

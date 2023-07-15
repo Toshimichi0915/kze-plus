@@ -1,11 +1,11 @@
-package net.toshimichi.kzeplus.mixin;
+package net.toshimichi.kzeplus.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.client.render.FogShape;
-import net.toshimichi.kzeplus.KzePlusMod;
+import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +21,7 @@ public class MixinBackgroundRenderer {
     @Inject(method = "applyFog", at = @At("HEAD"), cancellable = true)
     private static void disableSkyFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, float tickDelta, CallbackInfo ci) {
         if (!KzeUtils.isInKze()) return;
-        if (!KzePlusMod.getInstance().getOptions().isNoFog()) return;
+        if (!KzePlus.getInstance().getOptions().isNoFog()) return;
 
         CameraSubmersionType type = camera.getSubmersionType();
         if (type != CameraSubmersionType.WATER &&

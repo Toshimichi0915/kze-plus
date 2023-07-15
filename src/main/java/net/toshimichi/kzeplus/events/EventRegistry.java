@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.event;
+package net.toshimichi.kzeplus.events;
 
 public interface EventRegistry {
 

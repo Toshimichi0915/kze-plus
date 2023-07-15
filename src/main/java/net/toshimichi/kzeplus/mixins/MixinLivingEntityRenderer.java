@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.mixin;
+package net.toshimichi.kzeplus.mixins;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;

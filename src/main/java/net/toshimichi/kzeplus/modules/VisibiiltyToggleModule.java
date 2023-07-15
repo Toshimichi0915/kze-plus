@@ -1,8 +1,8 @@
-package net.toshimichi.kzeplus.module;
+package net.toshimichi.kzeplus.modules;
 
-import net.toshimichi.kzeplus.KzePlusMod;
-import net.toshimichi.kzeplus.event.ClientTickEvent;
-import net.toshimichi.kzeplus.event.EventTarget;
+import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.events.ClientTickEvent;
+import net.toshimichi.kzeplus.events.EventTarget;
 import net.toshimichi.kzeplus.options.VisibilityMode;
 
 public class VisibiiltyToggleModule implements Module {
@@ -11,25 +11,25 @@ public class VisibiiltyToggleModule implements Module {
 
     @Override
     public void onEnable() {
-        KzePlusMod.getInstance().getEventRegistry().register(this);
+        KzePlus.getInstance().getEventRegistry().register(this);
     }
 
     @Override
     public void onDisable() {
-        KzePlusMod.getInstance().getEventRegistry().unregister(this);
+        KzePlus.getInstance().getEventRegistry().unregister(this);
     }
 
     @EventTarget
     public void toggleVisibility(ClientTickEvent e) {
-        boolean pressed = KzePlusMod.VISIBILITY_TOGGLE_KEY.isPressed();
+        boolean pressed = KzePlus.VISIBILITY_TOGGLE_KEY.isPressed();
 
         if (prevPressed == pressed) return;
         prevPressed = pressed;
 
         if (!pressed) return;
 
-        VisibilityMode current = KzePlusMod.getInstance().getDefaultVisibility();
+        VisibilityMode current = KzePlus.getInstance().getDefaultVisibility();
         VisibilityMode next = VisibilityMode.values()[(current.ordinal() + 1) % VisibilityMode.values().length];
-        KzePlusMod.getInstance().setDefaultVisibility(next);
+        KzePlus.getInstance().setDefaultVisibility(next);
     }
 }

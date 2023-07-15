@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.module;
+package net.toshimichi.kzeplus.modules;
 
 import lombok.Data;
 import net.minecraft.item.ItemStack;

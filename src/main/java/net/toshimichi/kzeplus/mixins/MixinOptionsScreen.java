@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.mixin;
+package net.toshimichi.kzeplus.mixins;
 
 
 import net.minecraft.client.gui.screen.Screen;

@@ -1,14 +1,14 @@
-package net.toshimichi.kzeplus.module;
+package net.toshimichi.kzeplus.modules;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.toshimichi.kzeplus.KzePlusMod;
-import net.toshimichi.kzeplus.event.ChatEvent;
-import net.toshimichi.kzeplus.event.ClientTickEvent;
-import net.toshimichi.kzeplus.event.EventTarget;
-import net.toshimichi.kzeplus.event.InGameHudRenderEvent;
+import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.events.ChatEvent;
+import net.toshimichi.kzeplus.events.ClientTickEvent;
+import net.toshimichi.kzeplus.events.EventTarget;
+import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 
 import java.time.Duration;
@@ -26,12 +26,12 @@ public class PlayInfoModule implements Module {
 
     @Override
     public void onEnable() {
-        KzePlusMod.getInstance().getEventRegistry().register(this);
+        KzePlus.getInstance().getEventRegistry().register(this);
     }
 
     @Override
     public void onDisable() {
-        KzePlusMod.getInstance().getEventRegistry().unregister(this);
+        KzePlus.getInstance().getEventRegistry().unregister(this);
         reward = 0;
         exp = 0;
         playTime = 0;

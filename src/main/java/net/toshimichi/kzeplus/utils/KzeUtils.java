@@ -8,7 +8,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.scoreboard.Team;
-import net.toshimichi.kzeplus.KzePlusMod;
+import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.options.KzeOptions;
 import net.toshimichi.kzeplus.options.VisibilityMode;
 
@@ -92,8 +92,8 @@ public class KzeUtils {
         if (player == null) return VisibilityMode.FULL;
 
         GameOptions gameOptions = MinecraftClient.getInstance().options;
-        KzeOptions options = KzePlusMod.getInstance().getOptions();
-        VisibilityMode mode = KzePlusMod.getInstance().getDefaultVisibility();
+        KzeOptions options = KzePlus.getInstance().getOptions();
+        VisibilityMode mode = KzePlus.getInstance().getDefaultVisibility();
 
         if (player.isSneaking()) {
             VisibilityMode candidate = options.getHideOnSneak();

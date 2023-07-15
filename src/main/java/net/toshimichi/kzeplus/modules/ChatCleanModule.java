@@ -1,4 +1,4 @@
-package net.toshimichi.kzeplus.module;
+package net.toshimichi.kzeplus.modules;
 
 import lombok.Data;
 import net.minecraft.client.MinecraftClient;
@@ -6,11 +6,11 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
-import net.toshimichi.kzeplus.KzePlusMod;
-import net.toshimichi.kzeplus.event.ChatEvent;
-import net.toshimichi.kzeplus.event.ClientTickEvent;
-import net.toshimichi.kzeplus.event.EventTarget;
-import net.toshimichi.kzeplus.event.InGameHudRenderEvent;
+import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.events.ChatEvent;
+import net.toshimichi.kzeplus.events.ClientTickEvent;
+import net.toshimichi.kzeplus.events.EventTarget;
+import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +28,19 @@ public class ChatCleanModule implements Module {
 
     @Override
     public void onEnable() {
-        KzePlusMod.getInstance().getEventRegistry().register(this);
+        KzePlus.getInstance().getEventRegistry().register(this);
     }
 
     @Override
     public void onDisable() {
-        KzePlusMod.getInstance().getEventRegistry().unregister(this);
+        KzePlus.getInstance().getEventRegistry().unregister(this);
         killLogs.clear();
     }
 
     @EventTarget
     public void hideMagazineMessage(ChatEvent e) {
         String text = e.getText().getString();
-        if (!KzePlusMod.getInstance().getOptions().isHideMagazineMessage()) return;
+        if (!KzePlus.getInstance().getOptions().isHideMagazineMessage()) return;
         if (!MAGAZINE_MESSAGE_PATTERN.matcher(text).find()) return;
         e.setCancelled(true);
     }
@@ -48,7 +48,7 @@ public class ChatCleanModule implements Module {
     @EventTarget
     public void hideKillMessage(ChatEvent e) {
         String text = e.getText().getString();
-        if (!KzePlusMod.getInstance().getOptions().isHideKillMessage()) return;
+        if (!KzePlus.getInstance().getOptions().isHideKillMessage()) return;
 
         Matcher matcher = KILL_MESSAGE_PATTERN.matcher(text);
         if (!matcher.find()) return;
@@ -72,7 +72,7 @@ public class ChatCleanModule implements Module {
 
     @EventTarget
     public void showKillLog(InGameHudRenderEvent e) {
-        if (!KzePlusMod.getInstance().getOptions().isShowKillLog()) return;
+        if (!KzePlus.getInstance().getOptions().isShowKillLog()) return;
         if (killLogs.isEmpty()) return;
         if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
 

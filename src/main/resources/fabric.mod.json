@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.toshimichi.kzeplus.KzePlusMod"
+      "net.toshimichi.kzeplus.KzePlus"
     ]
   },
   "mixins": [
