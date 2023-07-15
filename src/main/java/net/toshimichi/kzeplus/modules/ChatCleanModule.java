@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 
 public class ChatCleanModule implements Module {
 
-    private static final Pattern MAGAZINE_MESSAGE_PATTERN = Pattern.compile("》[^ ]+? 弾が切れた！");
-    private static final Pattern KILL_MESSAGE_PATTERN = Pattern.compile("》([^ ]+?) killed by ([^ ]+?) \\(([^ ]+?) ?\\)");
+    private static final Pattern MAGAZINE_MESSAGE_PATTERN = Pattern.compile("^》[^ ]+? 弾が切れた！$");
+    private static final Pattern KILL_MESSAGE_PATTERN = Pattern.compile("^》([^ ]+?) killed by ([^ ]+?) \\(([^ ]+?) ?\\)$");
     private static final int MAX_KILL_LOGS = 5;
     private static final int KILL_LOG_DURATION = 200;
 

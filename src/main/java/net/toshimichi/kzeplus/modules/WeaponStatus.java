@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Data
 class WeaponStatus {
 
-    private static final Pattern WEAPON_NAME_PATTERN = Pattern.compile("([^ ]+?) +(\\d+?) +(\\d+)");
+    private static final Pattern WEAPON_NAME_PATTERN = Pattern.compile("^([^ ]+?) +(\\d+?) +(\\d+)$");
     private static final int RELOAD_COLOR = 0xfc5454;
 
     private final String name;
