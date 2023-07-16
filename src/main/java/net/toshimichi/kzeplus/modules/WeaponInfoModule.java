@@ -207,7 +207,7 @@ public class WeaponInfoModule implements Module {
 
             // update reload related info
             int ammoDiff = now.getCurrentAmmo() - old.getCurrentAmmo();
-            if (ammoDiff > 0) {
+            if (ammoDiff > 0 && (old.getCurrentAmmo() == 0 || now.getCurrentAmmo() != weaponInfo.getMagazineSize())) {
                 weaponInfo = new WeaponInfo(weaponInfo.getName(), weaponInfo.getMagazineSize(), reloadTicks, ammoDiff);
                 reloadTicks = 0;
                 updateWeaponInfo(weaponInfo);
