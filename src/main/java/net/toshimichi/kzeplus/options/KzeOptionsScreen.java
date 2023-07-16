@@ -32,7 +32,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
         };
 
-        this.list = new OptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
+        list = new OptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
         list.addAll(arr);
 
         addSelectableChild(list);
@@ -44,7 +44,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (super.mouseReleased(mouseX, mouseY, button)) return true;
-        if (this.list.mouseReleased(mouseX, mouseY, button)) return true;
+        if (list.mouseReleased(mouseX, mouseY, button)) return true;
         return false;
     }
 
