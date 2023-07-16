@@ -191,9 +191,9 @@ public class WeaponInfoModule implements Module {
                 return;
             }
 
-            WeaponStatus old = this.weaponStatus;
+            WeaponStatus old = weaponStatus;
             if (old == null) old = now;
-            this.weaponStatus = now;
+            weaponStatus = now;
 
             // set weapon info
             if (weaponInfo == null) {

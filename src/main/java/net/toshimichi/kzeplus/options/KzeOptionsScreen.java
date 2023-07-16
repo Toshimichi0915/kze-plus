@@ -32,12 +32,12 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
         };
 
-        list = new OptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
+        list = new OptionListWidget(client, width, height, 32, height - 32, 25);
         list.addAll(arr);
 
         addSelectableChild(list);
         addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, (buttonWidget) -> close())
-                .dimensions(this.width / 2 - 100, this.height - 27, 200, 20)
+                .dimensions(width / 2 - 100, height - 27, 200, 20)
                 .build());
     }
 
@@ -50,7 +50,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.render(matrices, this.list, mouseX, mouseY, delta);
+        render(matrices, list, mouseX, mouseY, delta);
     }
 
     @Override
