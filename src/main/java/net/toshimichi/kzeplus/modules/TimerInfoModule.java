@@ -42,16 +42,10 @@ public class TimerInfoModule implements Module {
                 .orElse(null);
     }
 
-    @EventTarget
-    private void renderTimers(InGameHudRenderEvent e) {
-        if (timers.isEmpty()) return;
-
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
-        InGameHud.fill(e.getMatrices(), 20, 140, 125, 150 + timers.size() * 10, 0x80000000);
-        for (Timer timer : timers) {
-            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, timer.toString(), 25, 145 + timers.indexOf(timer) * 10, 0xFFFFFF);
-        }
+    private List<Timer> getTimerByTick(int min, int max) {
+        return timers.stream()
+                .filter(timer -> min <= timer.getRemainingTicks() && timer.getRemainingTicks() <= max)
+                .toList();
     }
 
     private String stripPlayerName(String text) {
@@ -65,6 +59,18 @@ public class TimerInfoModule implements Module {
     }
 
     @EventTarget
+    private void renderTimers(InGameHudRenderEvent e) {
+        if (timers.isEmpty()) return;
+
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+        InGameHud.fill(e.getMatrices(), 20, 140, 125, 150 + timers.size() * 10, 0x80000000);
+        for (Timer timer : timers) {
+            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, timer.toString(), 25, 145 + timers.indexOf(timer) * 10, 0xFFFFFF);
+        }
+    }
+
+    @EventTarget
     private void addTimer(ChatEvent e) {
         String text = stripPlayerName(e.getText().getString());
 
@@ -72,6 +78,9 @@ public class TimerInfoModule implements Module {
         if (!matcher.find()) return;
         int seconds = Integer.parseInt(matcher.group(1));
         if (seconds > TIMER_LIMIT) return; // prevent abuse
+
+        int ticks = seconds * 20;
+        if (!getTimerByTick(ticks - 20, ticks + 20).isEmpty()) return;
 
         // get timer name
         int index = 1;
@@ -81,7 +90,7 @@ public class TimerInfoModule implements Module {
         } while (getTimerByName(name) != null);
 
         // register a new timer
-        Timer timer = new Timer(name, seconds * 20);
+        Timer timer = new Timer(name, ticks);
         timers.add(timer);
     }
 
