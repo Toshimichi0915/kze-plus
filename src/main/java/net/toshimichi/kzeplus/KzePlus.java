@@ -10,7 +10,7 @@ import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventRegistry;
 import net.toshimichi.kzeplus.events.EventTarget;
 import net.toshimichi.kzeplus.events.SimpleEventRegistry;
-import net.toshimichi.kzeplus.modules.ChatCleanModule;
+import net.toshimichi.kzeplus.modules.KillLogModules;
 import net.toshimichi.kzeplus.modules.Module;
 import net.toshimichi.kzeplus.modules.PlayInfoModule;
 import net.toshimichi.kzeplus.modules.TimerInfoModule;
@@ -74,7 +74,7 @@ public class KzePlus implements ModInitializer {
         // register modules
         modules.add(new PlayInfoModule());
         modules.add(new TimerInfoModule());
-        modules.add(new ChatCleanModule());
+        modules.add(new KillLogModules());
         modules.add(new VisibiiltyToggleModule());
         modules.add(new WeaponInfoModule());
     }
