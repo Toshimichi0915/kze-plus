@@ -116,7 +116,7 @@ public class KillLogModules implements Module {
             boolean wasKilled = player != null && victim.equals(player.getEntityName());
 
             return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : killerRole.getColor()))
-                    .append(Text.literal(" -> ").styled(style -> style.withColor(0xffffff)))
+                    .append(Text.literal(" -> "))
                     .append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : victimRole.getColor())))
                     .append(Text.literal(" (" + weapon + ")").styled(style -> style.withColor(WEAPON_COLOR)));
         }

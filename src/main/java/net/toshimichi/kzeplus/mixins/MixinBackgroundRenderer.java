@@ -5,6 +5,9 @@ import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.client.render.FogShape;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +30,9 @@ public class MixinBackgroundRenderer {
         if (type != CameraSubmersionType.WATER &&
                 fogType != BackgroundRenderer.FogType.FOG_TERRAIN &&
                 fogType != BackgroundRenderer.FogType.FOG_SKY) return;
+
+        Entity entity = camera.getFocusedEntity();
+        if (entity instanceof LivingEntity le && (le.hasStatusEffect(StatusEffects.BLINDNESS) || le.hasStatusEffect(StatusEffects.DARKNESS))) return;
 
         RenderSystem.setShaderFogStart(FOG_START);
         RenderSystem.setShaderFogEnd(FOG_END);
