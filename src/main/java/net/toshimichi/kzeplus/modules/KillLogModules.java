@@ -11,6 +11,7 @@ import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventTarget;
 import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
+import net.toshimichi.kzeplus.utils.GameRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,8 +97,6 @@ public class KillLogModules implements Module {
     @Data
     private static class KillLog {
 
-        private static final int ZOMBIE_COLOR = 0x54fb54;
-        private static final int HUMAN_COLOR = 0x00a8a8;
         private static final int WEAPON_COLOR = 0xfc5454;
         private static final int SELF_COLOR = 0xffff55;
 
@@ -108,15 +107,17 @@ public class KillLogModules implements Module {
 
         public Text toText() {
             boolean infected = weapon.equals("infected");
+            GameRole killerRole = infected ? GameRole.ZOMBIE : GameRole.SURVIVOR;
+            GameRole victimRole = !infected ? GameRole.ZOMBIE : GameRole.SURVIVOR;
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
             boolean didKill = player != null && killer.equals(player.getEntityName());
             boolean wasKilled = player != null && victim.equals(player.getEntityName());
 
-            return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : (infected ? ZOMBIE_COLOR : HUMAN_COLOR)))
+            return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : killerRole.getColor()))
                     .append(Text.literal(" -> ").styled(style -> style.withColor(0xffffff)))
-                    .append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : (!infected ? ZOMBIE_COLOR : HUMAN_COLOR))))
+                    .append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : victimRole.getColor())))
                     .append(Text.literal(" (" + weapon + ")").styled(style -> style.withColor(WEAPON_COLOR)));
         }
     }

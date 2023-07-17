@@ -45,11 +45,11 @@ public class KzeUtils {
     }
 
     public static int getSurvivorCount() {
-        return countTeamPlayers("e");
+        return countTeamPlayers(GameRole.SURVIVOR.getTeamName());
     }
 
     public static int getZombieCount() {
-        return countTeamPlayers("z");
+        return countTeamPlayers(GameRole.ZOMBIE.getTeamName());
     }
 
     public static boolean shouldHide(Entity entity) {
