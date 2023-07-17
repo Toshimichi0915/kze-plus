@@ -6,6 +6,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
@@ -116,7 +117,7 @@ public class KillLogModules implements Module {
             boolean wasKilled = player != null && victim.equals(player.getEntityName());
 
             return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : killerRole.getColor()))
-                    .append(Text.literal(" -> "))
+                    .append(Text.literal(" -> ").formatted(Formatting.WHITE))
                     .append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : victimRole.getColor())))
                     .append(Text.literal(" (" + weapon + ")").styled(style -> style.withColor(WEAPON_COLOR)));
         }
