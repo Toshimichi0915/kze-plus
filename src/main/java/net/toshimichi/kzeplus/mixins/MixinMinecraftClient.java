@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void notifyTick(CallbackInfo ci) {
+    private void notifyTick(CallbackInfo ci) {
         KzePlus.getInstance().getEventRegistry().call(new ClientTickEvent());
     }
 }

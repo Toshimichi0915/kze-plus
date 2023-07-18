@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinLivingEntityRenderer {
 
     @Inject(method = "getRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getItemEntityTranslucentCull(Lnet/minecraft/util/Identifier;)Lnet/minecraft/client/render/RenderLayer;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    public void fixRenderLayer(LivingEntity livingEntity, boolean showBody, boolean translucent, boolean showOutline, CallbackInfoReturnable<@Nullable RenderLayer> cir, Identifier identifier) {
+    private void fixRenderLayer(LivingEntity livingEntity, boolean showBody, boolean translucent, boolean showOutline, CallbackInfoReturnable<@Nullable RenderLayer> cir, Identifier identifier) {
         if (!KzeUtils.isInKze()) return;
         if (!livingEntity.isInvisible()) return;
 
@@ -32,7 +32,7 @@ public class MixinLivingEntityRenderer {
     }
 
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
-    public void hidePlayer(LivingEntity livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+    private void hidePlayer(LivingEntity livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if (!KzeUtils.shouldHide(livingEntity)) return;
 
         VisibilityMode mode = KzeUtils.getVisibilityMode();

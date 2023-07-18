@@ -47,7 +47,7 @@ public class WeaponInfoModule implements Module {
     }
 
     @EventTarget
-    public void updateContext(ClientTickEvent e) {
+    private void updateContext(ClientTickEvent e) {
         mainWeaponContext.update();
         subWeaponContext.update();
     }
@@ -155,7 +155,7 @@ public class WeaponInfoModule implements Module {
     }
 
     @EventTarget
-    public void renderWeaponInfo(InGameHudRenderEvent e) {
+    private void renderWeaponInfo(InGameHudRenderEvent e) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
 

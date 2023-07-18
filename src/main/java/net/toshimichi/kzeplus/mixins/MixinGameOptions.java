@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGameOptions {
 
     @Inject(method = "load", at = @At("HEAD"))
-    public void registerKeys(CallbackInfo ci) {
+    private void registerKeys(CallbackInfo ci) {
         // set up key bindings
         AccessorGameOptions gameOptions = (AccessorGameOptions) this;
 

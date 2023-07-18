@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinEntity {
 
     @Inject(method = "isInvisible", at = @At("HEAD"), cancellable = true)
-    public void setVisibility(CallbackInfoReturnable<Boolean> cir) {
+    private void setVisibility(CallbackInfoReturnable<Boolean> cir) {
         if (!KzeUtils.shouldHide((Entity) (Object) this)) return;
 
         VisibilityMode mode = KzeUtils.getVisibilityMode();
@@ -24,7 +24,7 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "isInvisibleTo", at = @At("HEAD"), cancellable = true)
-    public void setInvisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+    private void setInvisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         if (!KzeUtils.shouldHide((Entity) (Object) this)) return;
 
         VisibilityMode mode = KzeUtils.getVisibilityMode();

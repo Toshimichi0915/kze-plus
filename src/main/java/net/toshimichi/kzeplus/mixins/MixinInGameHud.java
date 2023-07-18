@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinInGameHud {
 
     @Inject(method = "render", at = @At("TAIL"))
-    public void notifyRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+    private void notifyRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         KzePlus.getInstance().getEventRegistry().call(new InGameHudRenderEvent(matrices, tickDelta));
     }
 }

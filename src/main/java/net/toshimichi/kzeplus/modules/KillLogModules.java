@@ -40,7 +40,7 @@ public class KillLogModules implements Module {
     }
 
     @EventTarget
-    public void hideMagazineMessage(ChatEvent e) {
+    private void hideMagazineMessage(ChatEvent e) {
         String text = e.getText().getString();
         if (!KzePlus.getInstance().getOptions().isHideMagazineMessage()) return;
         if (!MAGAZINE_MESSAGE_PATTERN.matcher(text).find()) return;
@@ -48,7 +48,7 @@ public class KillLogModules implements Module {
     }
 
     @EventTarget
-    public void hideKillMessage(ChatEvent e) {
+    private void hideKillMessage(ChatEvent e) {
         String text = e.getText().getString();
         if (!KzePlus.getInstance().getOptions().isHideKillMessage()) return;
 
@@ -67,13 +67,13 @@ public class KillLogModules implements Module {
     }
 
     @EventTarget
-    public void removeKillLog(ClientTickEvent e) {
+    private void removeKillLog(ClientTickEvent e) {
         // 1 tick = 50ms
         killLogs.removeIf(killLog -> System.currentTimeMillis() - killLog.getCreatedAt() > KILL_LOG_DURATION * 50);
     }
 
     @EventTarget
-    public void showKillLog(InGameHudRenderEvent e) {
+    private void showKillLog(InGameHudRenderEvent e) {
         if (!KzePlus.getInstance().getOptions().isShowKillLog()) return;
         if (killLogs.isEmpty()) return;
         if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;

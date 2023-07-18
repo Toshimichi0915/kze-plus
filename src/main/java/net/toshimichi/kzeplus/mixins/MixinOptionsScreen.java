@@ -29,7 +29,7 @@ public abstract class MixinOptionsScreen extends Screen {
     }
 
     @ModifyVariable(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;ILnet/minecraft/client/gui/widget/Positioner;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 0), method = "init()V")
-    public GridWidget.Adder createAdder(GridWidget.Adder adder) {
+    private GridWidget.Adder createAdder(GridWidget.Adder adder) {
         adder.add(createButton(Text.translatable("kze_plus.options.title"), () -> new KzeOptionsScreen(this, settings)));
         return adder;
     }

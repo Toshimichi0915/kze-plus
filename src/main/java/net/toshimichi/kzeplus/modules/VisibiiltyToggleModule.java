@@ -20,7 +20,7 @@ public class VisibiiltyToggleModule implements Module {
     }
 
     @EventTarget
-    public void toggleVisibility(ClientTickEvent e) {
+    private void toggleVisibility(ClientTickEvent e) {
         boolean pressed = KzePlus.VISIBILITY_TOGGLE_KEY.isPressed();
 
         if (prevPressed == pressed) return;

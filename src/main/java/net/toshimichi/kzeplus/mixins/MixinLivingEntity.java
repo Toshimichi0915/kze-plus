@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinLivingEntity {
 
     @Inject(at = @At("HEAD"), method = "hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", cancellable = true)
-    public void addNightVision(StatusEffect effect, CallbackInfoReturnable<Boolean> info) {
+    private void addNightVision(StatusEffect effect, CallbackInfoReturnable<Boolean> info) {
         if (!KzeUtils.isInKze()) return;
         if (!KzePlus.getInstance().getOptions().isFullBright()) return;
 
@@ -29,7 +29,7 @@ public class MixinLivingEntity {
     }
 
     @Inject(at = @At("HEAD"), method = "getStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Lnet/minecraft/entity/effect/StatusEffectInstance;", cancellable = true)
-    public void returnNightVision(StatusEffect effect, CallbackInfoReturnable<StatusEffectInstance> info) {
+    private void returnNightVision(StatusEffect effect, CallbackInfoReturnable<StatusEffectInstance> info) {
         if (!KzeUtils.isInKze()) return;
         if (!KzePlus.getInstance().getOptions().isFullBright()) return;
 
