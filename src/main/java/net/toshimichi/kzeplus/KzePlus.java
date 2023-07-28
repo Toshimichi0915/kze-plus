@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.option.KeyBinding;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventRegistry;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class KzePlus implements ModInitializer {
 
-    private static final Path CONFIG_PATH = Path.of("./kzeplus.json");
+    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("./kzeplus.json");
     private static final Gson GSON = new Gson();
 
     public static final String KZE_CATEGORY = "kze_plus.key.categories.kze_plus";
