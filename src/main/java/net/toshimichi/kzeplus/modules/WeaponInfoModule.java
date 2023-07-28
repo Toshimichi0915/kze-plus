@@ -233,7 +233,7 @@ public class WeaponInfoModule implements Module {
         public double getReloadRemainingTicks() {
             if (!isDataLoaded()) return 0;
             if (!weaponStatus.isReloading()) return 0;
-            int remainingAmmo = weaponInfo.getMagazineSize() - weaponStatus.getCurrentAmmo();
+            int remainingAmmo = Math.min(weaponInfo.getMagazineSize() - weaponStatus.getCurrentAmmo(), weaponStatus.getRemainingAmmo());
             double timesToReload = Math.max((double) remainingAmmo / weaponInfo.getBulletPerReload(), 1);
             return Math.max(timesToReload * weaponInfo.getReloadTicks() - reloadTicks, 0);
         }
