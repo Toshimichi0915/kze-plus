@@ -129,11 +129,11 @@ public class WeaponInfoModule implements Module {
         );
 
         if (weaponContextLength > 0) {
-            InGameHud.fill(matrices, 20, 100, weaponContextLength + 30, 130, 0x80000000);
+            InGameHud.fill(matrices, 20, 130, Math.max(weaponContextLength + 30, 145), 160, 0x80000000);
         }
 
-        textRenderer.drawWithShadow(matrices, main, 25, 105, mainReloading ? RELOAD_COLOR : 0xffffff);
-        textRenderer.drawWithShadow(matrices, sub, 25, 115, subReloading ? RELOAD_COLOR : 0xffffff);
+        textRenderer.drawWithShadow(matrices, main, 25, 135, mainReloading ? RELOAD_COLOR : 0xffffff);
+        textRenderer.drawWithShadow(matrices, sub, 25, 145, subReloading ? RELOAD_COLOR : 0xffffff);
     }
 
     private void drawReloadProgress(MatrixStack matrices, WeaponContext context) {

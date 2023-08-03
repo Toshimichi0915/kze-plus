@@ -8,6 +8,7 @@
     "AccessorKeybinding",
     "MixinBackgroundRenderer",
     "MixinChatHud",
+    "MixinClientWorld",
     "MixinEntity",
     "MixinGameOptions",
     "MixinInGameHud",

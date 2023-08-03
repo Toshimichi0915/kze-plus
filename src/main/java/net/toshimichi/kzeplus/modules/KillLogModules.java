@@ -87,11 +87,11 @@ public class KillLogModules implements Module {
             if (textWidth > maxTextWidth) maxTextWidth = textWidth;
         }
 
-        InGameHud.fill(e.getMatrices(), 135, 20, 145 + maxTextWidth, 30 + killLogs.size() * 10, 0x80000000);
+        InGameHud.fill(e.getMatrices(), 155, 20, 165 + maxTextWidth, 30 + killLogs.size() * 10, 0x80000000);
 
         for (int i = 0; i < killLogs.size(); i++) {
             KillLog killLog = killLogs.get(i);
-            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, killLog.toText(), 140, 25 + i * 10, 0xFFFFFF);
+            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, killLog.toText(), 160, 25 + i * 10, 0xFFFFFF);
         }
     }
 
