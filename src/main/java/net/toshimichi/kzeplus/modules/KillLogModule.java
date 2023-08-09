@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KillLogModules implements Module {
+public class KillLogModule implements Module {
 
-    private static final Pattern MAGAZINE_MESSAGE_PATTERN = Pattern.compile("^》[^ ]+? 弾が切れた！$");
+    private static final Pattern MAGAZINE_MESSAGE_PATTERN = Pattern.compile("^》 [^ ]+? 弾が切れた！$");
     private static final Pattern KILL_MESSAGE_PATTERN = Pattern.compile("^》(?:FirstBlood! )?([^ ]+?) killed by ([^ ]+?) \\(([^ ]+?) ?\\)$");
     private static final int MAX_KILL_LOGS = 5;
     private static final int KILL_LOG_DURATION = 200;
@@ -57,9 +57,15 @@ public class KillLogModules implements Module {
         e.setCancelled(true);
 
         String victim = matcher.group(1);
+        GameRole victimRole = GameRole.fromName(victim);
+        if (victimRole == null) victimRole = GameRole.SURVIVOR;
+
         String killer = matcher.group(2);
+        GameRole killerRole = GameRole.fromName(killer);
+        if (killerRole == null) killerRole = GameRole.SURVIVOR;
+
         String weapon = matcher.group(3);
-        killLogs.add(new KillLog(killer, victim, weapon));
+        killLogs.add(new KillLog(killer, killerRole, victim, victimRole, weapon));
 
         if (killLogs.size() > MAX_KILL_LOGS) {
             killLogs.remove(0);
@@ -102,15 +108,13 @@ public class KillLogModules implements Module {
         private static final int SELF_COLOR = 0xffff55;
 
         private final String killer;
+        private final GameRole killerRole;
         private final String victim;
+        private final GameRole victimRole;
         private final String weapon;
         private final long createdAt = System.currentTimeMillis();
 
         public Text toText() {
-            boolean infected = weapon.equals("infected");
-            GameRole killerRole = infected ? GameRole.ZOMBIE : GameRole.SURVIVOR;
-            GameRole victimRole = !infected ? GameRole.ZOMBIE : GameRole.SURVIVOR;
-
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
             boolean didKill = player != null && killer.equals(player.getEntityName());

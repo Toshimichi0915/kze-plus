@@ -1,7 +1,6 @@
 package net.toshimichi.kzeplus.modules;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import lombok.Data;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -13,15 +12,12 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
 import net.toshimichi.kzeplus.KzePlus;
-import net.toshimichi.kzeplus.events.ClientTickEvent;
+import net.toshimichi.kzeplus.context.weapon.WeaponContext;
 import net.toshimichi.kzeplus.events.EventTarget;
 import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WeaponInfoModule implements Module {
 
@@ -29,12 +25,7 @@ public class WeaponInfoModule implements Module {
     private static final int DEG_STEP = 3;
     private static final int INNER_CIRCLE_SIZE = 3;
     private static final int OUTER_CIRCLE_SIZE = 5;
-
     private static final int RELOAD_COLOR = 0xfc5454;
-
-    private final Map<String, WeaponInfo> weapons = new HashMap<>();
-    private final WeaponContext mainWeaponContext = new WeaponContext(0);
-    private final WeaponContext subWeaponContext = new WeaponContext(1);
 
     @Override
     public void onEnable() {
@@ -44,29 +35,6 @@ public class WeaponInfoModule implements Module {
     @Override
     public void onDisable() {
         KzePlus.getInstance().getEventRegistry().unregister(this);
-    }
-
-    @EventTarget
-    private void updateContext(ClientTickEvent e) {
-        mainWeaponContext.update();
-        subWeaponContext.update();
-    }
-
-    private WeaponContext getSelectedWeaponContext() {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) return null;
-
-        int slot = player.getInventory().selectedSlot;
-        if (mainWeaponContext.getSlot() == slot) return mainWeaponContext;
-        if (subWeaponContext.getSlot() == slot) return subWeaponContext;
-        return null;
-    }
-
-    public void updateWeaponInfo(WeaponInfo now) {
-        WeaponInfo old = weapons.get(now.getName());
-        if (now.equals(old)) return;
-
-        weapons.put(now.getName(), now);
     }
 
     private void drawProgressCircle(double progress, double centerX, double centerY) {
@@ -104,36 +72,37 @@ public class WeaponInfoModule implements Module {
     }
 
     private String getWeaponStatus(WeaponContext context) {
-        WeaponStatus status = context.getWeaponStatus();
-        if (status == null) return "";
-        return status.getName() + ": " +
-                status.getCurrentAmmo() +
+        return context.getName() + ": " +
+                context.getCurrentAmmo() +
                 "/" +
                 context.getWeaponInfo().getMagazineSize() +
                 " (" +
-                status.getRemainingAmmo() +
+                context.getRemainingAmmo() +
                 ")";
     }
 
     private void drawWeaponStatus(MatrixStack matrices) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        String main = getWeaponStatus(mainWeaponContext);
-        String sub = getWeaponStatus(subWeaponContext);
-        boolean mainReloading = mainWeaponContext.getWeaponStatus() != null && mainWeaponContext.getWeaponStatus().isReloading();
-        boolean subReloading = subWeaponContext.getWeaponStatus() != null && subWeaponContext.getWeaponStatus().isReloading();
+        WeaponContext mainWeapon = KzePlus.getInstance().getMainWeaponContext();
+        if (!mainWeapon.isValid()) return;
+        boolean mainReloading = mainWeapon.isReloading();
+        String mainStatus = getWeaponStatus(mainWeapon);
+
+        WeaponContext subWeapon = KzePlus.getInstance().getSubWeaponContext();
+        if (!subWeapon.isValid()) return;
+
+        boolean subReloading = subWeapon.isReloading();
+        String subStatus = getWeaponStatus(subWeapon);
 
         int weaponContextLength = Math.max(
-                textRenderer.getWidth(main),
-                textRenderer.getWidth(sub)
+                textRenderer.getWidth(mainStatus),
+                textRenderer.getWidth(subStatus)
         );
 
-        if (weaponContextLength > 0) {
-            InGameHud.fill(matrices, 20, 130, Math.max(weaponContextLength + 30, 145), 160, 0x80000000);
-        }
-
-        textRenderer.drawWithShadow(matrices, main, 25, 135, mainReloading ? RELOAD_COLOR : 0xffffff);
-        textRenderer.drawWithShadow(matrices, sub, 25, 145, subReloading ? RELOAD_COLOR : 0xffffff);
+        InGameHud.fill(matrices, 20, 130, Math.max(weaponContextLength + 30, 145), 160, 0x80000000);
+        textRenderer.drawWithShadow(matrices, mainStatus, 25, 135, mainReloading ? RELOAD_COLOR : 0xffffff);
+        textRenderer.drawWithShadow(matrices, subStatus, 25, 145, subReloading ? RELOAD_COLOR : 0xffffff);
     }
 
     private void drawReloadProgress(MatrixStack matrices, WeaponContext context) {
@@ -142,15 +111,17 @@ public class WeaponInfoModule implements Module {
         int centerX = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2;
         int centerY = MinecraftClient.getInstance().getWindow().getScaledHeight() / 2;
 
-        double remainingTicks = context.getReloadRemainingTicks();
+        double remainingTicks = context.getRemainingReloadTicks();
         if (remainingTicks == 0) return;
+
+        double totalReloadTicks = context.getTotalReloadTicks();
+        if (totalReloadTicks == 0) return;
 
         String text = "残り" + FORMAT.format(remainingTicks * 0.05) + "秒";
         int width = textRenderer.getWidth(text) + 10;
 
-        double reloadTicks = context.getReloadTicks();
         InGameHud.fill(matrices, centerX - width / 2 - 5, centerY + 15, centerX + width / 2 + 15, centerY + 35, 0x80000000);
-        drawProgressCircle((reloadTicks - remainingTicks) / reloadTicks, centerX - width / 2 + 5, centerY + 25);
+        drawProgressCircle((totalReloadTicks - remainingTicks) / totalReloadTicks, centerX - width / 2 + 5, centerY + 25);
         textRenderer.drawWithShadow(matrices, text, centerX - width / 2 + 15, centerY + 20, 0xffffff);
     }
 
@@ -159,89 +130,16 @@ public class WeaponInfoModule implements Module {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
-        WeaponContext context = getSelectedWeaponContext();
-        if (context != null) {
-            drawReloadProgress(e.getMatrices(), context);
+
+        int slot = player.getInventory().selectedSlot;
+        WeaponContext weaponContext = null;
+        if (slot == 0) weaponContext = KzePlus.getInstance().getMainWeaponContext();
+        else if (slot == 1) weaponContext = KzePlus.getInstance().getSubWeaponContext();
+
+        if (weaponContext != null && weaponContext.isValid()) {
+            drawReloadProgress(e.getMatrices(), weaponContext);
         }
 
         drawWeaponStatus(e.getMatrices());
-    }
-
-    @Data
-    private class WeaponContext {
-
-        private final int slot;
-
-        private WeaponStatus weaponStatus;
-        private WeaponInfo weaponInfo;
-        private int reloadTicks;
-
-        public void update() {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player == null) return;
-
-            ItemStack itemStack = player.getInventory().getStack(slot);
-
-            // get weapon status
-            WeaponStatus now = WeaponStatus.fromItemStack(itemStack);
-            if (now == null) {
-                weaponStatus = null;
-                weaponInfo = null;
-                reloadTicks = 0;
-                return;
-            }
-
-            WeaponStatus old = weaponStatus;
-            if (old == null) old = now;
-            weaponStatus = now;
-
-            // set weapon info
-            if (weaponInfo == null) {
-                weaponInfo = weapons.get(now.getName());
-            }
-
-            if (weaponInfo == null) {
-                weaponInfo = new WeaponInfo(now.getName(), now.getCurrentAmmo(), 0, 0);
-                updateWeaponInfo(weaponInfo);
-            }
-
-            // update reload related info
-            int ammoDiff = now.getCurrentAmmo() - old.getCurrentAmmo();
-            if (ammoDiff > 0 && (old.getCurrentAmmo() == 0 || now.getCurrentAmmo() != weaponInfo.getMagazineSize())) {
-                weaponInfo = new WeaponInfo(weaponInfo.getName(), weaponInfo.getMagazineSize(), reloadTicks, ammoDiff);
-                reloadTicks = 0;
-                updateWeaponInfo(weaponInfo);
-            }
-
-            if (now.isReloading() && player.getInventory().selectedSlot == slot) {
-                reloadTicks++;
-            }
-
-            if (old.isReloading() && !now.isReloading()) {
-                reloadTicks = 0;
-            }
-        }
-
-        private boolean isDataLoaded() {
-            if (weaponInfo == null) return false;
-            if (weaponStatus == null) return false;
-            if (weaponInfo.getBulletPerReload() == 0) return false;
-
-            return true;
-        }
-
-        public double getReloadRemainingTicks() {
-            if (!isDataLoaded()) return 0;
-            if (!weaponStatus.isReloading()) return 0;
-            int remainingAmmo = Math.min(weaponInfo.getMagazineSize() - weaponStatus.getCurrentAmmo(), weaponStatus.getRemainingAmmo());
-            double timesToReload = Math.max((double) remainingAmmo / weaponInfo.getBulletPerReload(), 1);
-            return Math.max(timesToReload * weaponInfo.getReloadTicks() - reloadTicks, 0);
-        }
-
-        public double getReloadTicks() {
-            if (!isDataLoaded()) return 0;
-            double timesToReload = Math.max((double) weaponInfo.getMagazineSize() / weaponInfo.getBulletPerReload(), 1);
-            return Math.max(timesToReload * weaponInfo.getReloadTicks(), 0);
-        }
     }
 }

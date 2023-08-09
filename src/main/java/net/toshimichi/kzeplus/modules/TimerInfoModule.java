@@ -5,6 +5,7 @@ import lombok.Data;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.events.ChatEvent;
@@ -21,7 +22,8 @@ import java.util.regex.Pattern;
 public class TimerInfoModule implements Module {
 
     private static final int TIMER_LIMIT = 300;
-    private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+) *?(?:s|S|秒)");
+    private static final Pattern CHAT_PATTERN = Pattern.compile("^([^ ]+?)(?: 》|:) .*$");
+    private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+?) *?[sS秒]");
     private final List<Timer> timers = new ArrayList<>();
 
     @Override
@@ -72,9 +74,14 @@ public class TimerInfoModule implements Module {
 
     @EventTarget
     private void addTimer(ChatEvent e) {
-        String text = stripPlayerName(e.getText().getString());
+        Matcher matcher = CHAT_PATTERN.matcher(e.getText().getString());
+        if (matcher.find()) {
+            String name = matcher.group(1);
+            ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+            if (networkHandler != null && networkHandler.getPlayerListEntry(name) != null) return;
+        }
 
-        Matcher matcher = TIMER_PATTERN.matcher(text);
+        matcher = TIMER_PATTERN.matcher(stripPlayerName(e.getText().getString()));
         if (!matcher.find()) return;
         int seconds = Integer.parseInt(matcher.group(1));
         if (seconds > TIMER_LIMIT) return; // prevent abuse
