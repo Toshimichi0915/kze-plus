@@ -191,13 +191,14 @@ public class GameContextModule implements Module {
         }
 
         if (end) {
+            context.setEndedAt(System.currentTimeMillis());
+            context.setEnded(true);
+
             GameContext last = KzePlus.getInstance().getGameContextRegistry().getLastGameContext();
             if (last != null) {
                 calcRewardPerHit(context, last);
             }
 
-            context.setEndedAt(System.currentTimeMillis());
-            context.setEnded(true);
             KzePlus.getInstance().getGameContextRegistry().endGameContext();
         }
     }
