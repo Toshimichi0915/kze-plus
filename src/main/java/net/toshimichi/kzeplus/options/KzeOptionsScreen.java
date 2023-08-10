@@ -30,6 +30,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.hide_magazine_message", options.isHideMagazineMessage(), options::setHideMagazineMessage),
                 SimpleOption.ofBoolean("kze_plus.options.hide_kill_message", options.isHideKillMessage(), options::setHideKillMessage),
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
+                SimpleOption.ofBoolean("kze_plus.options.show_timer", options.isShowTimer(), options::setShowTimer),
         };
 
         list = new OptionListWidget(client, width, height, 32, height - 32, 25);

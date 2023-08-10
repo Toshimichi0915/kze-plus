@@ -12,4 +12,5 @@ public class KzeOptions {
     private boolean hideMagazineMessage = true;
     private boolean hideKillMessage = true;
     private boolean showKillLog = true;
+    private boolean showTimer = true;
 }

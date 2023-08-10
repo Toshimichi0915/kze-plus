@@ -62,6 +62,7 @@ public class TimerInfoModule implements Module {
 
     @EventTarget
     private void renderTimers(InGameHudRenderEvent e) {
+        if (!KzePlus.getInstance().getOptions().isShowTimer()) return;
         if (timers.isEmpty()) return;
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
