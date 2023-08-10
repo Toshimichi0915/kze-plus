@@ -18,7 +18,6 @@ public class GameContextRegistry {
 
     private final List<GameContext> gameContextHistories = new ArrayList<>();
     private GameContext currentGameContext;
-    private GameContext lastGameContext;
 
     private void save() {
         if (!currentGameContext.isEnded()) throw new IllegalStateException("Game is not ended yet.");
@@ -41,7 +40,6 @@ public class GameContextRegistry {
         gameContextHistories.add(currentGameContext);
         save();
 
-        lastGameContext = currentGameContext;
         currentGameContext = null;
     }
 }

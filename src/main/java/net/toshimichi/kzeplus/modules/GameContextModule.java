@@ -8,7 +8,6 @@ import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.game.GameContext;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
 import net.toshimichi.kzeplus.context.weapon.WeaponInfo;
-import net.toshimichi.kzeplus.context.weapon.WeaponRegistry;
 import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventTarget;
@@ -16,6 +15,7 @@ import net.toshimichi.kzeplus.events.SoundPlayEvent;
 import net.toshimichi.kzeplus.utils.GameRole;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,53 +40,46 @@ public class GameContextModule implements Module {
         KzePlus.getInstance().getEventRegistry().unregister(this);
     }
 
-    private void calcRewardPerHit(GameContext c1, GameContext c2) {
-        if (!c1.isEnded()) return;
-        if (!c2.isEnded()) return;
+    private void updateRewardPerHit(WeaponInfo info, int rewardPerHit) {
+        if (info.getName() == null) throw new IllegalArgumentException("This weapon is a placeholder.");
 
-        String mainWeaponName1 = c1.getMainWeaponName();
-        String subWeaponName1 = c1.getSubWeaponName();
+        KzePlus.getInstance().getWeaponRegistry().save(new WeaponInfo(
+                info.getName(),
+                info.getMagazineSize(),
+                info.getReloadTicks(),
+                info.getBulletPerReload(),
+                rewardPerHit)
+        );
+    }
 
-        String mainWeaponName2 = c2.getMainWeaponName();
-        String subWeaponName2 = c2.getSubWeaponName();
+    private void updateRewardPerHit(GameContext current, GameContext last) {
+        if (current.getDefenseBonus() >= 10000) return;
 
-        if (mainWeaponName1 == null) return;
-        if (subWeaponName1 == null) return;
-        if (!mainWeaponName1.equals(mainWeaponName2)) return;
-        if (!subWeaponName1.equals(subWeaponName2)) return;
+        WeaponInfo main = current.getMainWeapon();
+        WeaponInfo sub = current.getSubWeapon();
 
-        int mainHitCount1 = c1.getMainHitCount();
-        int subHitCount1 = c1.getSubHitCount();
-        int reward1 = c1.getDefenseBonus();
-        if (reward1 >= 10000) return;
+        if (current.getMainHitCount() > 0 && main.getRewardPerHit() == 0 && (sub.getRewardPerHit() != 0 || current.getSubHitCount() == 0)) {
+            int rewardPerHit = (current.getDefenseBonus() - sub.getRewardPerHit() * current.getSubHitCount()) / current.getMainHitCount();
+            updateRewardPerHit(main, rewardPerHit);
+        } else if (current.getSubHitCount() > 0 && sub.getRewardPerHit() == 0 && (main.getRewardPerHit() != 0 || current.getMainHitCount() == 0)) {
+            int rewardPerHit = (current.getDefenseBonus() - main.getRewardPerHit() * current.getMainHitCount()) / current.getSubHitCount();
+            updateRewardPerHit(sub, rewardPerHit);
+        }
 
-        int mainHitCount2 = c2.getMainHitCount();
-        int subHitCount2 = c2.getSubHitCount();
-        int reward2 = c2.getDefenseBonus();
-        if (reward2 >= 10000) return;
+        if (last == null) return;
+        if (last.getDefenseBonus() >= 10000) return;
+        if (!main.getName().equals(last.getMainWeaponName())) return;
+        if (!sub.getName().equals(last.getSubWeaponName())) return;
 
-        /* cramer's rule
-         * mainHitCount1 * x1 + subHitCount1 * x2 = reward1
-         * mainHitCount2 * x1 + subHitCount2 * x2 = reward2
-         *
-         * therefore
-         * det = mainHitCount1 * subHitCount2 - subHitCount1 * mainHitCount2
-         * x1 = (reward1 * subHitCount2 - reward2 * subHitCount1) / det
-         * x2 = (reward2 * mainHitCount1 - reward1 * mainHitCount2) / det
-         */
-        int det = mainHitCount1 * subHitCount2 - subHitCount1 * mainHitCount2;
+        // https://en.wikipedia.org/wiki/Cramer%27s_rule
+        int det = current.getMainHitCount() * last.getSubHitCount() - current.getSubHitCount() * last.getMainHitCount();
         if (det == 0) return;
 
-        int x1 = (reward1 * subHitCount2 - reward2 * subHitCount1) / det;
-        int x2 = (reward2 * mainHitCount1 - reward1 * mainHitCount2) / det;
+        int mainRewardPerHit = (current.getDefenseBonus() * last.getSubHitCount() - last.getDefenseBonus() * current.getSubHitCount()) / det;
+        int subRewardPerHit = (last.getDefenseBonus() * current.getMainHitCount() - current.getDefenseBonus() * last.getMainHitCount()) / det;
 
-        WeaponRegistry registry = KzePlus.getInstance().getWeaponRegistry();
-
-        WeaponInfo i1 = c1.getMainWeapon();
-        registry.save(new WeaponInfo(mainWeaponName1, i1.getMagazineSize(), i1.getReloadTicks(), i1.getBulletPerReload(), x1));
-
-        WeaponInfo i2 = c1.getSubWeapon();
-        registry.save(new WeaponInfo(subWeaponName1, i2.getMagazineSize(), i2.getReloadTicks(), i2.getBulletPerReload(), x2));
+        updateRewardPerHit(main, mainRewardPerHit);
+        updateRewardPerHit(sub, subRewardPerHit);
     }
 
     @EventTarget
@@ -128,6 +121,7 @@ public class GameContextModule implements Module {
     private void updateDefenseBonus(SoundPlayEvent e) {
         if (e.getSound() != SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP) return;
         if (e.getPitch() != 0) return;
+        if (e.getVolume() != 0.5) return;
 
         GameContext context = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
         if (context == null) return;
@@ -194,9 +188,18 @@ public class GameContextModule implements Module {
             context.setEndedAt(System.currentTimeMillis());
             context.setEnded(true);
 
-            GameContext last = KzePlus.getInstance().getGameContextRegistry().getLastGameContext();
-            if (last != null) {
-                calcRewardPerHit(context, last);
+            List<GameContext> applicable = KzePlus.getInstance().getGameContextRegistry().getGameContextHistories()
+                    .stream()
+                    .filter(GameContext::isEnded)
+                    .filter(it -> it.getMainHitCount() > 0 || it.getSubHitCount() > 0)
+                    .filter(it -> it.getMainWeaponName().equals(context.getMainWeaponName()) && it.getSubWeaponName().equals(context.getSubWeaponName()))
+                    .toList();
+
+            GameContext last = applicable.isEmpty() ? null : applicable.get(applicable.size() - 1);
+            if (last != null && last.isEnded()) {
+                updateRewardPerHit(context, last);
+            } else {
+                updateRewardPerHit(context, null);
             }
 
             KzePlus.getInstance().getGameContextRegistry().endGameContext();
