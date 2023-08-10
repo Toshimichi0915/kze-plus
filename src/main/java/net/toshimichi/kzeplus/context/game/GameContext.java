@@ -46,6 +46,6 @@ public class GameContext {
     }
 
     public int getEstimatedHitBonus() {
-        return (int) (damage + shotCount * 4);
+        return (int) (damage + shotCount * 5);
     }
 }
