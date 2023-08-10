@@ -115,8 +115,6 @@ public class GameContextModule implements Module {
         GameContext context = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
         if (context == null) return;
 
-        context.setEndedAt(System.currentTimeMillis());
-        context.setEnded(true);
         context.setHumanWin(id.equals(HUMAN_WIN_SOUND));
     }
 
@@ -156,7 +154,6 @@ public class GameContextModule implements Module {
 
         GameContext context = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
         if (context == null) return;
-        if (context.isEnded()) return;
 
         if (GameRole.fromEntity(player) != GameRole.ZOMBIE) return;
 
@@ -199,6 +196,8 @@ public class GameContextModule implements Module {
                 calcRewardPerHit(context, last);
             }
 
+            context.setEndedAt(System.currentTimeMillis());
+            context.setEnded(true);
             KzePlus.getInstance().getGameContextRegistry().endGameContext();
         }
     }
