@@ -75,14 +75,19 @@ public class TimerInfoModule implements Module {
 
     @EventTarget
     private void addTimer(ChatEvent e) {
-        Matcher matcher = CHAT_PATTERN.matcher(e.getText().getString());
+        String text = e.getText().getString();
+        Matcher matcher = CHAT_PATTERN.matcher(text);
         if (matcher.find()) {
             String name = matcher.group(1);
             ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
             if (networkHandler != null && networkHandler.getPlayerListEntry(name) != null) return;
         }
 
-        matcher = TIMER_PATTERN.matcher(stripPlayerName(e.getText().getString()));
+        text = stripPlayerName(text);
+        if (text.contains("参加しました")) return;
+        if (text.contains("投票しました")) return;
+
+        matcher = TIMER_PATTERN.matcher(text);
         if (!matcher.find()) return;
         int seconds = Integer.parseInt(matcher.group(1));
         if (seconds > TIMER_LIMIT) return; // prevent abuse
