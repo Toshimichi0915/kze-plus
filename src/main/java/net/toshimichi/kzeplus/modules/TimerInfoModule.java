@@ -23,7 +23,8 @@ public class TimerInfoModule implements Module {
 
     private static final int TIMER_LIMIT = 300;
     private static final Pattern CHAT_PATTERN = Pattern.compile("^([^ ]+?)(?: 》|:) .*$");
-    private static final Pattern TIMER_PATTERN = Pattern.compile("(\\d+?) *?[sS秒]");
+    private static final char[] ALT_NUMBERS = "０１２３４５６７８９".toCharArray();
+    private static final Pattern TIMER_PATTERN = Pattern.compile("([\\d０１２３４５６７８９]+?) *?[sS秒]");
     private final List<Timer> timers = new ArrayList<>();
 
     @Override
@@ -89,7 +90,13 @@ public class TimerInfoModule implements Module {
 
         matcher = TIMER_PATTERN.matcher(text);
         if (!matcher.find()) return;
-        int seconds = Integer.parseInt(matcher.group(1));
+
+        String number = matcher.group(1);
+        for (int i = 0; i < ALT_NUMBERS.length; i++) {
+            number = number.replace(ALT_NUMBERS[i], Character.forDigit(i, 10));
+        }
+
+        int seconds = Integer.parseInt(number);
         if (seconds > TIMER_LIMIT) return; // prevent abuse
 
         int ticks = seconds * 20;
