@@ -15,7 +15,7 @@ import net.toshimichi.kzeplus.events.SoundPlayEvent;
 import net.toshimichi.kzeplus.utils.GameRole;
 import net.toshimichi.kzeplus.utils.KzeUtils;
 
-import java.util.List;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -188,14 +188,14 @@ public class GameContextModule implements Module {
             context.setEndedAt(System.currentTimeMillis());
             context.setEnded(true);
 
-            List<GameContext> applicable = KzePlus.getInstance().getGameContextRegistry().getGameContextHistories()
+            GameContext last = KzePlus.getInstance().getGameContextRegistry().getGameContextHistories()
                     .stream()
                     .filter(GameContext::isEnded)
                     .filter(it -> it.getMainHitCount() > 0 || it.getSubHitCount() > 0)
                     .filter(it -> it.getMainWeaponName().equals(context.getMainWeaponName()) && it.getSubWeaponName().equals(context.getSubWeaponName()))
-                    .toList();
+                    .max(Comparator.comparingLong(GameContext::getStartedAt))
+                    .orElse(null);
 
-            GameContext last = applicable.isEmpty() ? null : applicable.get(applicable.size() - 1);
             if (last != null && last.isEnded()) {
                 updateRewardPerHit(context, last);
             } else {
