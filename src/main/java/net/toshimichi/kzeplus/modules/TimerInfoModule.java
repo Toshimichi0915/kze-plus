@@ -86,7 +86,7 @@ public class TimerInfoModule implements Module {
 
         text = stripPlayerName(text);
         if (text.contains("参加しました")) return;
-        if (text.contains("投票しました")) return;
+        if (text.contains("投票をした")) return;
 
         matcher = TIMER_PATTERN.matcher(text);
         if (!matcher.find()) return;
