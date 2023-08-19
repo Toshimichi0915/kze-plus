@@ -33,14 +33,6 @@ jobs:
       - name: Make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
-      - name: Build
-        run: ./gradlew build
-      - name: Capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: Artifacts
-          path: build/libs/
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:

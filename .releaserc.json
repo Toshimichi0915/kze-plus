@@ -8,6 +8,12 @@
     "@semantic-release/npm",
     "@semantic-release/git",
     [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "./gradlew build"
+      }
+    ],
+    [
       "@semantic-release/github",
       {
         "assets": [
