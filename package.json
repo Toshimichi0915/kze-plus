@@ -1,0 +1,27 @@
+{
+  "name": "kze-plus",
+  "version": "0.1.0",
+  "description": "KZEでのプレイをより快適にするためのMODです。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Toshimichi0915/kze-plus.git"
+  },
+  "keywords": [],
+  "author": "Toshimichi <main@toshimichi.net> (https://toshimichi.net/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Toshimichi0915/kze-plus/issues"
+  },
+  "homepage": "https://github.com/Toshimichi0915/kze-plus#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@semantic-release/git": "^10.0.1",
+    "husky": "^8.0.3",
+    "semantic-release": "^21.0.7"
+  }
+}
