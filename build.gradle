@@ -37,3 +37,7 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
+
+tasks.register("publish") {
+    // this is just a placeholder task for "gradle-semantic-release-plugin"
+}
