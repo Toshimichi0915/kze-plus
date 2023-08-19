@@ -5,16 +5,14 @@
 
 name: build
 on: [ pull_request, push ]
+permissions:
+  contents: read # for checkout
 
 jobs:
   build:
     strategy:
       matrix:
-        # Use these Java versions
-        java: [
-          17,    # Current Java LTS & minimum supported by Minecraft
-        ]
-        # and run on both Linux and Windows
+        java: [ 17 ]
         os: [ ubuntu-22.04, windows-2022 ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -38,3 +36,7 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+      - name: release new version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
