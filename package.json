@@ -3,6 +3,7 @@
   "version": "1.4.6",
   "description": "KZEでのプレイをより快適にするためのMODです。",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "prepare": "husky install"
   },
