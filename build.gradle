@@ -39,5 +39,6 @@ java {
 }
 
 tasks.register("publish") {
+    group = "publishing"
     // this is just a placeholder task for "gradle-semantic-release-plugin"
 }
