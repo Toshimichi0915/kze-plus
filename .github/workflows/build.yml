@@ -5,16 +5,14 @@
 
 name: build
 on: [ pull_request, push ]
+permissions:
+  contents: read # for checkout
 
 jobs:
   build:
     strategy:
       matrix:
-        # Use these Java versions
-        java: [
-          17,    # Current Java LTS & minimum supported by Minecraft
-        ]
-        # and run on both Linux and Windows
+        java: [ 17 ]
         os: [ ubuntu-22.04, windows-2022 ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -33,8 +31,20 @@ jobs:
       - name: build
         run: ./gradlew build
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }} # Only upload artifacts built from latest java on one OS
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts
           path: build/libs/
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: release new version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
