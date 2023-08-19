@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         java: [ 17 ]
-        os: [ ubuntu-22.04, windows-2022 ]
+        os: [ ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write # to be able to publish a GitHub release
