@@ -4,8 +4,6 @@
   "package": "net.toshimichi.kzeplus.mixins",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "AccessorGameOptions",
-    "AccessorKeybinding",
     "MixinBackgroundRenderer",
     "MixinClientWorld",
     "MixinEntity",

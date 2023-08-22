@@ -16,6 +16,10 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.20"
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/kze_plus.accesswidener")
+}
+
 base {
     archivesName = project.archives_base_name
 }
