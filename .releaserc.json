@@ -17,7 +17,7 @@
       "@semantic-release/github",
       {
         "assets": [
-          "build/libs/*.jar"
+          "build/artifacts/*.jar"
         ]
       }
     ]
