@@ -1,5 +1,8 @@
 name: release
-on: [ pull_request, push ]
+on:
+  push:
+    branches:
+      - master
 permissions:
   contents: read # for checkout
 
