@@ -1,8 +1,8 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id "fabric-loom" version "1.2-SNAPSHOT"
 }
 
-def packageJson = new groovy.json.JsonSlurper().parseText(file('package.json').text)
+def packageJson = new groovy.json.JsonSlurper().parseText(file("package.json").text)
 version = packageJson.version
 group = project.maven_group
 
@@ -37,4 +37,15 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.register("copyArtifact", Copy) {
+    dependsOn remapJar
+
+    from remapJar.archiveFile
+    into "${buildDir}/artifacts"
+}
+
+build {
+    dependsOn copyArtifact
 }
