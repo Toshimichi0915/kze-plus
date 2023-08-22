@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.option.KeyBinding;
 import net.toshimichi.kzeplus.context.game.GameContextRegistry;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
@@ -43,6 +44,7 @@ public class KzePlus implements ModInitializer {
     public static final KeyBinding VISIBILITY_TOGGLE_KEY = new KeyBinding("kze_plus.key.toggle_visibility", GLFW.GLFW_KEY_V, KZE_CATEGORY);
 
     @Getter private static KzePlus instance;
+    @Getter private ModContainer modContainer;
     @Getter private KzeOptions options;
     @Getter private EventRegistry eventRegistry;
     @Getter private WeaponRegistry weaponRegistry;
@@ -58,6 +60,7 @@ public class KzePlus implements ModInitializer {
     @Override
     public void onInitialize() {
         instance = this;
+        modContainer = FabricLoader.getInstance().getModContainer("kze_plus").orElseThrow();
 
         // load options
         if (Files.exists(CONFIG_PATH)) {
