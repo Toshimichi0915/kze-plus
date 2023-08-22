@@ -72,15 +72,11 @@ public class KzeUtils {
         VisibilityMode mode = KzePlus.getInstance().getDefaultVisibility();
 
         if (player.isSneaking()) {
-            VisibilityMode candidate = options.getHideOnSneak();
-            if (candidate.ordinal() > mode.ordinal()) mode = candidate;
+            return options.getHideOnSneak();
+        } else if (player.isSprinting() || gameOptions.forwardKey.isPressed() && gameOptions.sprintKey.isPressed()) {
+            return options.getHideOnSprint();
+        } else {
+            return mode;
         }
-
-        if (player.isSprinting() || gameOptions.forwardKey.isPressed() && gameOptions.sprintKey.isPressed()) {
-            VisibilityMode candidate = options.getHideOnSprint();
-            if (candidate.ordinal() > mode.ordinal()) mode = candidate;
-        }
-
-        return mode;
     }
 }
