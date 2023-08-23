@@ -4,6 +4,7 @@
   "version": "${version}",
   "name": "kze-plus",
   "description": "This mod improves the game experience on KZE.",
+  "accessWidener" : "kze_plus.accesswidener",
   "authors": [
     "Toshimichi0915"
   ],
