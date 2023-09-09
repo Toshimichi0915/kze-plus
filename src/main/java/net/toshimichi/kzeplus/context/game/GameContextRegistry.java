@@ -34,11 +34,11 @@ public class GameContextRegistry {
         currentGameContext = new GameContext(System.currentTimeMillis());
     }
 
-    public void endGameContext() {
+    public void endGameContext(boolean save) {
         if (currentGameContext == null) return;
 
         gameContextHistories.add(currentGameContext);
-        save();
+        if (save) save();
 
         currentGameContext = null;
     }
