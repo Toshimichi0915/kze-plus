@@ -114,7 +114,7 @@ public class GameContextModule implements Module {
     @EventTarget
     private void resetGameContext(ClientTickEvent e) {
         if (KzeUtils.isInGame()) return;
-        KzePlus.getInstance().getGameContextRegistry().endGameContext();
+        KzePlus.getInstance().getGameContextRegistry().endGameContext(false);
     }
 
     @EventTarget
@@ -202,7 +202,7 @@ public class GameContextModule implements Module {
                 updateRewardPerHit(context, null);
             }
 
-            KzePlus.getInstance().getGameContextRegistry().endGameContext();
+            KzePlus.getInstance().getGameContextRegistry().endGameContext(true);
         }
     }
 }
