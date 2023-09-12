@@ -14,7 +14,8 @@
     "MixinLivingEntityRenderer",
     "MixinMessageHandler",
     "MixinMinecraftClient",
-    "MixinOptionsScreen"
+    "MixinOptionsScreen",
+    "MixinServerResourcePackProvider"
   ],
   "injectors": {
     "defaultRequire": 1

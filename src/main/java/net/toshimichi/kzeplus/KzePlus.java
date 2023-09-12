@@ -52,6 +52,7 @@ public class KzePlus implements ModInitializer {
     @Getter private WeaponContext mainWeaponContext;
     @Getter private WeaponContext subWeaponContext;
 
+    @Getter private final List<String> gunShotSounds = new ArrayList<>();
     @Getter @Setter private VisibilityMode defaultVisibility = VisibilityMode.FULL;
 
     private final List<Module> modules = new ArrayList<>();
