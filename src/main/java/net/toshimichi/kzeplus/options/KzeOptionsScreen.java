@@ -19,6 +19,10 @@ public class KzeOptionsScreen extends GameOptionsScreen {
         super(parent, gameOptions, Text.translatable("kze_plus.options.title"));
     }
 
+    private static Text getPercentValueText(Text prefix, double value) {
+        return Text.translatable("options.percent_value", prefix, (int) (value * 100.0));
+    }
+
     @Override
     protected void init() {
         KzeOptions options = KzePlus.getInstance().getOptions();
@@ -31,6 +35,8 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.hide_kill_message", options.isHideKillMessage(), options::setHideKillMessage),
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
                 SimpleOption.ofBoolean("kze_plus.options.show_timer", options.isShowTimer(), options::setShowTimer),
+                new SimpleOption<>("kze_plus.options.gun_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,
+                        SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getGunSoundVolume(), options::setGunSoundVolume)
         };
 
         list = new OptionListWidget(client, width, height, 32, height - 32, 25);

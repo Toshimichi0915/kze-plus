@@ -2,6 +2,7 @@
   "kze_plus.options.title": "KZEの設定",
   "kze_plus.options.visibility_on_sneak": "スニーク時の可視性",
   "kze_plus.options.visibility_on_sprint": "ダッシュ時の可視性",
+  "kze_plus.options.gun_sound_volume": "銃の音量",
   "kze_plus.options.full_bright": "画面を明るくする",
   "kze_plus.options.no_fog": "霧を削除する",
   "kze_plus.options.hide_magazine_message": "弾切れを非表示にする",
