@@ -9,6 +9,7 @@ public class KzeOptions {
     private VisibilityMode hideOnSprint = VisibilityMode.OUTLINE;
     private double gunSoundVolume = 1;
     private double damageSoundVolume = 1;
+    private double hitSoundVolume = 1;
     private boolean fullBright = true;
     private boolean noFog = true;
     private boolean hideMagazineMessage = true;

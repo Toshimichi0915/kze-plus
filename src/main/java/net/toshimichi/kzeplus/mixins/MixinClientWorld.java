@@ -20,10 +20,13 @@ public class MixinClientWorld {
     @ModifyArgs(method = "playSound(DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FFZJ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/PositionedSoundInstance;<init>(Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FFLnet/minecraft/util/math/random/Random;DDD)V"))
     private void applyGunSoundVolume(Args args) {
         SoundEvent event = args.get(0);
+        float volume = args.get(2);
         if (event.getId().getNamespace().equals("minecraft") && KzePlus.getInstance().getGunShotSounds().contains(event.getId().getPath())) {
-            args.set(2, (float) KzePlus.getInstance().getOptions().getGunSoundVolume());
+            args.set(2, (float) (volume * KzePlus.getInstance().getOptions().getGunSoundVolume()));
         } else if (event == SoundEvents.ENTITY_PLAYER_HURT && KzeUtils.isInGame()) {
-            args.set(2, (float) KzePlus.getInstance().getOptions().getDamageSoundVolume());
+            args.set(2, (float) (volume * KzePlus.getInstance().getOptions().getDamageSoundVolume()));
+        } else if (event == SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP && KzeUtils.isInGame()) {
+            args.set(2, (float) (volume * KzePlus.getInstance().getOptions().getHitSoundVolume()));
         }
     }
 
