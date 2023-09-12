@@ -1,6 +1,6 @@
 {
   "name": "kze-plus",
-  "version": "1.4.13",
+  "version": "1.5.0",
   "description": "KZEでのプレイをより快適にするためのMODです。",
   "main": "index.js",
   "private": true,
