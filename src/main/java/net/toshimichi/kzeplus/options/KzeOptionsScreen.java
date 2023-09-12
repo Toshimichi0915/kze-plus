@@ -36,7 +36,9 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
                 SimpleOption.ofBoolean("kze_plus.options.show_timer", options.isShowTimer(), options::setShowTimer),
                 new SimpleOption<>("kze_plus.options.gun_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,
-                        SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getGunSoundVolume(), options::setGunSoundVolume)
+                        SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getGunSoundVolume(), options::setGunSoundVolume),
+                new SimpleOption<>("kze_plus.options.damage_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,
+                        SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getDamageSoundVolume(), options::setDamageSoundVolume)
         };
 
         list = new OptionListWidget(client, width, height, 32, height - 32, 25);

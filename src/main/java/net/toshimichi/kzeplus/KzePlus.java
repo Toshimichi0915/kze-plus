@@ -8,7 +8,6 @@ import lombok.Setter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.toshimichi.kzeplus.context.game.GameContextRegistry;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
