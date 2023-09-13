@@ -5,17 +5,20 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.context.widget.Widget;
 import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventTarget;
-import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 import net.toshimichi.kzeplus.utils.GameRole;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,16 +30,24 @@ public class KillLogModule implements Module {
     private static final int KILL_LOG_DURATION = 200;
 
     private final List<KillLog> killLogs = new ArrayList<>();
+    private boolean enabled;
 
     @Override
     public void onEnable() {
+        enabled = true;
         KzePlus.getInstance().getEventRegistry().register(this);
     }
 
     @Override
     public void onDisable() {
+        enabled = false;
         KzePlus.getInstance().getEventRegistry().unregister(this);
         killLogs.clear();
+    }
+
+    @Override
+    public Map<String, Widget> getWidgets() {
+        return Map.of("kill_log", new KillLogWidget());
     }
 
     @EventTarget
@@ -78,29 +89,6 @@ public class KillLogModule implements Module {
         killLogs.removeIf(killLog -> System.currentTimeMillis() - killLog.getCreatedAt() > KILL_LOG_DURATION * 50);
     }
 
-    @EventTarget
-    private void showKillLog(InGameHudRenderEvent e) {
-        if (!KzePlus.getInstance().getOptions().isShowKillLog()) return;
-        if (killLogs.isEmpty()) return;
-        if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
-
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
-        // get max text width
-        int maxTextWidth = 0;
-        for (KillLog killLog : killLogs) {
-            int textWidth = textRenderer.getWidth(killLog.toText());
-            if (textWidth > maxTextWidth) maxTextWidth = textWidth;
-        }
-
-        InGameHud.fill(e.getMatrices(), 155, 20, 165 + maxTextWidth, 30 + killLogs.size() * 10, 0x80000000);
-
-        for (int i = 0; i < killLogs.size(); i++) {
-            KillLog killLog = killLogs.get(i);
-            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, killLog.toText(), 160, 25 + i * 10, 0xFFFFFF);
-        }
-    }
-
     @Data
     private static class KillLog {
 
@@ -124,6 +112,67 @@ public class KillLogModule implements Module {
                     .append(Text.literal(" -> ").formatted(Formatting.WHITE))
                     .append(Text.literal(victim).styled(style -> style.withColor(wasKilled ? SELF_COLOR : victimRole.getColor())))
                     .append(Text.literal(" (" + weapon + ")").styled(style -> style.withColor(WEAPON_COLOR)));
+        }
+    }
+
+    private class KillLogWidget implements Widget {
+
+        private static final List<KillLog> example = List.of(
+                new KillLog("Toshimichi0915", GameRole.SURVIVOR, "T0shimichi", GameRole.ZOMBIE, "M4A1"),
+                new KillLog("tsrly", GameRole.ZOMBIE, "MysticsMerchant", GameRole.SURVIVOR, "infected")
+        );
+
+        private boolean valid;
+        private List<KillLog> target;
+
+        @Override
+        public void update(boolean placeholder) {
+            if (placeholder) {
+                target = example;
+                valid = true;
+            } else {
+                target = killLogs;
+                valid = enabled && KzePlus.getInstance().getOptions().isShowKillLog() && !target.isEmpty();
+            }
+        }
+
+        @Override
+        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+            if (!valid) return;
+            if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
+
+            TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
+
+            for (int i = 0; i < target.size(); i++) {
+                KillLog killLog = target.get(i);
+                InGameHud.drawTextWithShadow(stack, textRenderer, killLog.toText(), x + 5, y + 5 + i * 10, 0xFFFFFF);
+            }
+        }
+
+        @Override
+        public int getWidth() {
+            if (!valid) return 0;
+            TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+            int maxTextWidth = 0;
+            for (KillLog killLog : target) {
+                int textWidth = textRenderer.getWidth(killLog.toText());
+                if (textWidth > maxTextWidth) maxTextWidth = textWidth;
+            }
+
+            return maxTextWidth + 10;
+        }
+
+        @Override
+        public int getHeight() {
+            if (!valid) return 0;
+            return target.size() * 10 + 10;
+        }
+
+        @Override
+        public List<GameOptions> getOptions() {
+            return List.of();
         }
     }
 }

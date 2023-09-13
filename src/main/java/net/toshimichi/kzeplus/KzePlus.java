@@ -12,6 +12,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.toshimichi.kzeplus.context.game.GameContextRegistry;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
 import net.toshimichi.kzeplus.context.weapon.WeaponRegistry;
+import net.toshimichi.kzeplus.context.widget.WidgetContext;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventRegistry;
 import net.toshimichi.kzeplus.events.EventTarget;
@@ -24,6 +25,7 @@ import net.toshimichi.kzeplus.modules.TimerInfoModule;
 import net.toshimichi.kzeplus.modules.VisibiiltyToggleModule;
 import net.toshimichi.kzeplus.modules.WeaponContextModule;
 import net.toshimichi.kzeplus.modules.WeaponInfoModule;
+import net.toshimichi.kzeplus.modules.WidgetContextModule;
 import net.toshimichi.kzeplus.options.KzeOptions;
 import net.toshimichi.kzeplus.options.VisibilityMode;
 import net.toshimichi.kzeplus.utils.KzeUtils;
@@ -49,6 +51,7 @@ public class KzePlus implements ModInitializer {
     @Getter private EventRegistry eventRegistry;
     @Getter private WeaponRegistry weaponRegistry;
     @Getter private GameContextRegistry gameContextRegistry;
+    @Getter private WidgetContext widgetContext;
     @Getter private WeaponContext mainWeaponContext;
     @Getter private WeaponContext subWeaponContext;
 
@@ -83,17 +86,24 @@ public class KzePlus implements ModInitializer {
         gameContextRegistry = new GameContextRegistry();
 
         // set up contexts
+        widgetContext = new WidgetContext();
         mainWeaponContext = new WeaponContext(0);
         subWeaponContext = new WeaponContext(1);
 
         // register modules
-        modules.add(new GameContextModule());
-        modules.add(new PlayInfoModule());
-        modules.add(new TimerInfoModule());
-        modules.add(new KillLogModule());
-        modules.add(new VisibiiltyToggleModule());
-        modules.add(new WeaponContextModule());
-        modules.add(new WeaponInfoModule());
+        registerModule(new GameContextModule());
+        registerModule(new PlayInfoModule());
+        registerModule(new TimerInfoModule());
+        registerModule(new KillLogModule());
+        registerModule(new VisibiiltyToggleModule());
+        registerModule(new WeaponContextModule());
+        registerModule(new WeaponInfoModule());
+        registerModule(new WidgetContextModule());
+    }
+
+    private void registerModule(Module module) {
+        modules.add(module);
+        module.getWidgets().forEach((id, widget) -> widgetContext.register(id, widget));
     }
 
     public void saveOptions() {

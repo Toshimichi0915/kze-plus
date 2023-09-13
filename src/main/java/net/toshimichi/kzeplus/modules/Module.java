@@ -1,8 +1,20 @@
 package net.toshimichi.kzeplus.modules;
 
+import net.toshimichi.kzeplus.context.widget.Widget;
+
+import java.util.Map;
+
 public interface Module {
 
-    void onEnable();
+    default void onEnable() {
 
-    void onDisable();
+    }
+
+    default void onDisable() {
+
+    }
+
+    default Map<String, Widget> getWidgets() {
+        return Map.of();
+    }
 }

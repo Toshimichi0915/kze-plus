@@ -1,0 +1,50 @@
+{
+  "id": "root",
+  "anchor": "TOP_LEFT",
+  "origin": "TOP_LEFT",
+  "x": 0,
+  "y": 0,
+  "children": [
+    {
+      "id": "reload_info",
+      "anchor": "CENTER",
+      "origin": "CENTER",
+      "x": 0,
+      "y": 25,
+      "children": []
+    },
+    {
+      "id": "play_info",
+      "anchor": "TOP_LEFT",
+      "origin": "TOP_LEFT",
+      "x": 20,
+      "y": 20,
+      "children": [
+        {
+          "id": "weapon_info",
+          "anchor": "BOTTOM_LEFT",
+          "origin": "TOP_LEFT",
+          "x": 0,
+          "y": 10,
+          "children": []
+        },
+        {
+          "id": "timer_info",
+          "anchor": "BOTTOM_LEFT",
+          "origin": "TOP_LEFT",
+          "x": 0,
+          "y": 50,
+          "children": []
+        },
+        {
+          "id": "kill_log",
+          "anchor": "TOP_RIGHT",
+          "origin": "TOP_LEFT",
+          "x": 10,
+          "y": 0,
+          "children": []
+        }
+      ]
+    }
+  ]
+}

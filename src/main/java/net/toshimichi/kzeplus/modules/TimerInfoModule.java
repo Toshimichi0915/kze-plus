@@ -7,15 +7,18 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.util.math.MatrixStack;
 import net.toshimichi.kzeplus.KzePlus;
+import net.toshimichi.kzeplus.context.widget.Widget;
 import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventTarget;
-import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,16 +29,24 @@ public class TimerInfoModule implements Module {
     private static final char[] ALT_NUMBERS = "０１２３４５６７８９".toCharArray();
     private static final Pattern TIMER_PATTERN = Pattern.compile("([\\d０１２３４５６７８９]+?) *?[sS秒]");
     private final List<Timer> timers = new ArrayList<>();
+    private boolean enabled;
 
     @Override
     public void onEnable() {
+        enabled = true;
         KzePlus.getInstance().getEventRegistry().register(this);
     }
 
     @Override
     public void onDisable() {
+        enabled = false;
         KzePlus.getInstance().getEventRegistry().unregister(this);
         timers.clear();
+    }
+
+    @Override
+    public Map<String, Widget> getWidgets() {
+        return Map.of("timer_info", new TimerInfoWidget());
     }
 
     public Timer getTimerByName(String name) {
@@ -59,19 +70,6 @@ public class TimerInfoModule implements Module {
                 .stream()
                 .map(entry -> entry.getProfile().getName())
                 .reduce(text, (s, name) -> s.replace(name, ""));
-    }
-
-    @EventTarget
-    private void renderTimers(InGameHudRenderEvent e) {
-        if (!KzePlus.getInstance().getOptions().isShowTimer()) return;
-        if (timers.isEmpty()) return;
-
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
-        InGameHud.fill(e.getMatrices(), 20, 170, 145, 180 + timers.size() * 10, 0x80000000);
-        for (Timer timer : timers) {
-            InGameHud.drawTextWithShadow(e.getMatrices(), textRenderer, timer.toString(), 25, 175 + timers.indexOf(timer) * 10, 0xFFFFFF);
-        }
     }
 
     @EventTarget
@@ -134,6 +132,56 @@ public class TimerInfoModule implements Module {
         @Override
         public String toString() {
             return name + ": " + FORMAT.format(remainingTicks / 20D) + "秒";
+        }
+    }
+
+    private class TimerInfoWidget implements Widget {
+
+        private static final List<Timer> example = List.of(
+                new Timer("タイマー 1", 120),
+                new Timer("タイマー 2", 230)
+        );
+
+        private boolean valid;
+        private List<Timer> target;
+
+        @Override
+        public void update(boolean placeholder) {
+            if (placeholder) {
+                valid = true;
+                target = example;
+            } else {
+                valid = enabled && !timers.isEmpty() && KzePlus.getInstance().getOptions().isShowTimer();
+                target = timers;
+            }
+        }
+
+        @Override
+        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+            if (!valid) return;
+
+            TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
+            for (Timer timer : target) {
+                InGameHud.drawTextWithShadow(stack, textRenderer, timer.toString(), x + 5, y + 5 + target.indexOf(timer) * 10, 0xFFFFFF);
+            }
+        }
+
+        @Override
+        public int getWidth() {
+            return 125;
+        }
+
+        @Override
+        public int getHeight() {
+            if (!valid) return 0;
+            return target.size() * 10 + 10;
+        }
+
+        @Override
+        public List<GameOptions> getOptions() {
+            return null;
         }
     }
 }
