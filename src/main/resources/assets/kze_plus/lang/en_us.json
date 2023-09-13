@@ -15,5 +15,10 @@
   "kze_plus.visibility.outline": "半透明",
   "kze_plus.visibility.none": "非表示",
   "kze_plus.key.categories.kze_plus": "KZE Plus",
-  "kze_plus.key.toggle_visibility": "可視性を切り替える"
+  "kze_plus.key.toggle_visibility": "可視性を切り替える",
+  "kze_plus.options.show_reward": "報酬を表示する",
+  "kze_plus.options.show_exp": "経験値を表示する",
+  "kze_plus.options.show_play_time": "プレイ時間を表示する",
+  "kze_plus.options.show_team": "チームを表示する",
+  "kze_plus.options.show_bonus": "防衛・被弾ボーナスを表示する"
 }

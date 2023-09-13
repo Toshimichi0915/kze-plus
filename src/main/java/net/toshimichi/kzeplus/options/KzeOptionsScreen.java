@@ -40,7 +40,12 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 new SimpleOption<>("kze_plus.options.damage_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,
                         SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getDamageSoundVolume(), options::setDamageSoundVolume),
                 new SimpleOption<>("kze_plus.options.hit_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,
-                        SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getHitSoundVolume(), options::setHitSoundVolume)
+                        SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getHitSoundVolume(), options::setHitSoundVolume),
+                SimpleOption.ofBoolean("kze_plus.options.show_reward", options.isShowReward(), options::setShowReward),
+                SimpleOption.ofBoolean("kze_plus.options.show_exp", options.isShowExp(), options::setShowExp),
+                SimpleOption.ofBoolean("kze_plus.options.show_play_time", options.isShowPlayTime(), options::setShowPlayTime),
+                SimpleOption.ofBoolean("kze_plus.options.show_team", options.isShowTeam(), options::setShowTeam),
+                SimpleOption.ofBoolean("kze_plus.options.show_bonus", options.isShowBonus(), options::setShowBonus),
         };
 
         list = new OptionListWidget(client, width, height, 32, height - 32, 25);

@@ -51,9 +51,20 @@ public class PlayInfoModule implements Module {
 
     private class PlayInfoWidget implements Widget {
 
+        private int height;
+        private boolean showReward;
+        private boolean showExp;
+        private boolean showPlayTime;
+        private boolean showTeam;
+        private boolean showBonus;
+
         @Override
         public void update(boolean placeholder) {
-
+            showReward = KzePlus.getInstance().getOptions().isShowReward();
+            showExp = KzePlus.getInstance().getOptions().isShowExp();
+            showPlayTime = KzePlus.getInstance().getOptions().isShowPlayTime();
+            showTeam = KzePlus.getInstance().getOptions().isShowTeam();
+            showBonus = KzePlus.getInstance().getOptions().isShowBonus();
         }
 
         @Override
@@ -86,25 +97,56 @@ public class PlayInfoModule implements Module {
                 hitCount = context.getShotCount();
             }
 
+            if (!showReward && !showExp && !showPlayTime && !showTeam && !showBonus) {
+                height = 0;
+                return;
+            }
             InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
 
+            int delta = 5;
+
+
             // reward
-            InGameHud.drawTextWithShadow(stack, textRenderer, "取得金額: " + reward + "円", x + 5, y + 5, 0xffffff);
+            if (showReward) {
+                InGameHud.drawTextWithShadow(stack, textRenderer, "取得金額: " + reward + "円", x + 5, y + delta, 0xffffff);
+                delta += 10;
+            }
 
             // exp
-            InGameHud.drawTextWithShadow(stack, textRenderer, "取得経験値: " + exp, x + 5, y + 15, 0xffffff);
+            if (showExp) {
+                InGameHud.drawTextWithShadow(stack, textRenderer, "取得経験値: " + exp, x + 5, y + delta, 0xffffff);
+                delta += 10;
+            }
 
             // play time
-            Duration duration = Duration.ofSeconds(playTime / 20);
-            String time = "%02d:%02d:%02d".formatted(duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart());
-            InGameHud.drawTextWithShadow(stack, textRenderer, "プレイ時間: " + time, x + 5, x + 25, 0xffffff);
+            if (showPlayTime) {
+                Duration duration = Duration.ofSeconds(playTime / 20);
+                String time = "%02d:%02d:%02d".formatted(duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart());
+                InGameHud.drawTextWithShadow(stack, textRenderer, "プレイ時間: " + time, x + 5, y + delta, 0xffffff);
+                delta += 10;
+            }
 
-            InGameHud.drawTextWithShadow(stack, textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", x + 5, x + 45, 0xffffff);
-            InGameHud.drawTextWithShadow(stack, textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", y + 5, y + 55, 0xffffff);
+            // team
+            if (showTeam) {
+                if (showReward || showExp || showPlayTime) delta += 10;
+                InGameHud.drawTextWithShadow(stack, textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", x + 5, y + delta, 0xffffff);
+                delta += 10;
+                InGameHud.drawTextWithShadow(stack, textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", y + 5, y + delta, 0xffffff);
+
+                delta += 10;
+                if (showBonus) delta += 10;
+            }
 
             // bonus
-            InGameHud.drawTextWithShadow(stack, textRenderer, "防衛: " + Math.min(defenseBonus, 10000) + "円 (" + mainDefenseCount + ", " + subDefenseCount + ")", x + 5, y + 75, 0xffffff);
-            InGameHud.drawTextWithShadow(stack, textRenderer, "被弾: " + Math.min(hitBonus, 4000) + "円 (" + hitCount + ")", x + 5, y + 85, 0xffffff);
+            if (showBonus) {
+                if ((showReward || showExp || showPlayTime) && !showTeam) delta += 10;
+                InGameHud.drawTextWithShadow(stack, textRenderer, "防衛: " + Math.min(defenseBonus, 10000) + "円 (" + mainDefenseCount + ", " + subDefenseCount + ")", x + 5, y + delta, 0xffffff);
+                delta += 10;
+                InGameHud.drawTextWithShadow(stack, textRenderer, "被弾: " + Math.min(hitBonus, 4000) + "円 (" + hitCount + ")", x + 5, y + delta, 0xffffff);
+                delta += 10;
+            }
+
+            height = delta + 5;
         }
 
         @Override
@@ -114,7 +156,9 @@ public class PlayInfoModule implements Module {
 
         @Override
         public int getHeight() {
-            return 100;
+            // TODO better margin calculation
+            if (!showReward && !showExp && !showPlayTime && !showTeam && !showBonus) return -5;
+            return height;
         }
 
         @Override
