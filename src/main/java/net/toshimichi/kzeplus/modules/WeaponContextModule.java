@@ -77,6 +77,12 @@ public class WeaponContextModule implements Module {
 
         WeaponInfo weaponInfo = context.getWeaponInfo();
 
+        // fix for AK-47
+        if (weaponInfo.getMagazineSize() == 0 && currentAmmo != 0) {
+            weaponInfo = new WeaponInfo(weaponInfo.getName(), currentAmmo, weaponInfo.getReloadTicks(), weaponInfo.getBulletPerReload(), weaponInfo.getRewardPerHit());
+            KzePlus.getInstance().getWeaponRegistry().save(weaponInfo);
+        }
+
         // update reload related info
         if (context.getReloadTicks() > 0 && ammoDiff > 0 && (prevAmmoEmpty || currentAmmo != weaponInfo.getMagazineSize())) {
             weaponInfo = new WeaponInfo(weaponInfo.getName(), weaponInfo.getMagazineSize(), context.getReloadTicks(), ammoDiff, weaponInfo.getRewardPerHit());

@@ -89,7 +89,7 @@ public class GameContextModule implements Module {
     }
 
     @EventTarget
-    private void updateWeapon(ClientTickEvent e) {
+    private void updateWeaponName(ClientTickEvent e) {
         GameContext context = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
         if (context == null) return;
 
