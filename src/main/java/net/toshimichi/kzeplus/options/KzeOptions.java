@@ -21,5 +21,6 @@ public class KzeOptions {
     private boolean showPlayTime = true;
     private boolean showTeam = true;
     private boolean showBonus = true;
-    private boolean showVote = true;
+    private boolean showNextVote = true;
+    private boolean hideVoteMessage = true;
 }

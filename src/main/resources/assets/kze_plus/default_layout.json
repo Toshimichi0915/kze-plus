@@ -45,16 +45,16 @@
               ]
             }
           ]
-        },
-        {
-          "id": "kill_log",
-          "anchor": "TOP_RIGHT",
-          "origin": "TOP_LEFT",
-          "x": 10,
-          "y": 0,
-          "children": []
         }
       ]
+    },
+    {
+      "id": "kill_log",
+      "anchor": "TOP_LEFT",
+      "origin": "TOP_LEFT",
+      "x": 155,
+      "y": 20,
+      "children": []
     }
   ]
 }

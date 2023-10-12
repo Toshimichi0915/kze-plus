@@ -21,5 +21,6 @@
   "kze_plus.options.show_play_time": "プレイ時間を表示する",
   "kze_plus.options.show_team": "チームを表示する",
   "kze_plus.options.show_bonus": "防衛・被弾ボーナスを表示する",
-  "kze_plus.options.show_vote": "投票を表示する"
+  "kze_plus.options.show_next_vote": "次の投票時刻を表示する",
+  "kze_plus.options.hide_vote_message": "投票メッセージを非表示にする"
 }

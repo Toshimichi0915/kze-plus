@@ -10,6 +10,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.widget.Widget;
+import net.toshimichi.kzeplus.events.ChatEvent;
 import net.toshimichi.kzeplus.events.ClientTickEvent;
 import net.toshimichi.kzeplus.events.EventTarget;
 
@@ -22,9 +23,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VoteInfoModule implements Module {
 
+    private static final Pattern VOTE_MESSAGE_PATTERN = Pattern.compile("》.*? ([a-zA-Z0-9_]+) さんが投票");
     private static final Gson GSON = new Gson();
     private static final TypeToken<List<VoteData>> TYPE_TOKEN = new TypeToken<>() {};
     private static final int PING_INTERVAL = 30000;
@@ -91,6 +95,19 @@ public class VoteInfoModule implements Module {
         nextVoteTicks--;
     }
 
+    @EventTarget
+    public void hideVoteMessage(ChatEvent e) {
+        if (!KzePlus.getInstance().getOptions().isHideVoteMessage()) return;
+        Matcher matcher = VOTE_MESSAGE_PATTERN.matcher(e.getText().getString());
+        if (!matcher.find()) return;
+
+        String current = MinecraftClient.getInstance().getSession().getUsername();
+        String username = matcher.group(1);
+        if (username.equals(current)) return;
+
+        e.setCancelled(true);
+    }
+
     @Override
     public Map<String, Widget> getWidgets() {
         return Map.of("vote_info", new VoteInfoWidget());
@@ -110,7 +127,7 @@ public class VoteInfoModule implements Module {
 
         @Override
         public void update(boolean placeholder) {
-            this.valid = successful && KzePlus.getInstance().getOptions().isShowVote() || placeholder;
+            this.valid = successful && KzePlus.getInstance().getOptions().isShowNextVote() || placeholder;
             if (placeholder) {
                 canVote = true;
                 message = "投票できます";
