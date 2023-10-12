@@ -34,6 +34,11 @@ public class ScreenWidget implements Widget {
     }
 
     @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    @Override
     public List<GameOptions> getOptions() {
         return List.of();
     }

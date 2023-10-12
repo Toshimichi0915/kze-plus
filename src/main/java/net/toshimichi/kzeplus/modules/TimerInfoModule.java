@@ -49,7 +49,7 @@ public class TimerInfoModule implements Module {
         return Map.of("timer_info", new TimerInfoWidget());
     }
 
-    public Timer getTimerByName(String name) {
+    private Timer getTimerByName(String name) {
         return timers.stream()
                 .filter(timer -> timer.getName().equals(name))
                 .findAny()
@@ -158,8 +158,6 @@ public class TimerInfoModule implements Module {
 
         @Override
         public void render(int x, int y, MatrixStack stack, float tickDelta) {
-            if (!valid) return;
-
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
@@ -175,8 +173,12 @@ public class TimerInfoModule implements Module {
 
         @Override
         public int getHeight() {
-            if (!valid) return 0;
             return target.size() * 10 + 10;
+        }
+
+        @Override
+        public boolean isVisible() {
+            return valid;
         }
 
         @Override

@@ -15,5 +15,7 @@ public interface Widget {
 
     int getHeight();
 
+    boolean isVisible();
+
     List<GameOptions> getOptions();
 }

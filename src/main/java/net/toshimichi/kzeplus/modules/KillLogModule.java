@@ -138,7 +138,6 @@ public class KillLogModule implements Module {
 
         @Override
         public void render(int x, int y, MatrixStack stack, float tickDelta) {
-            if (!valid) return;
             if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
 
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -152,7 +151,6 @@ public class KillLogModule implements Module {
 
         @Override
         public int getWidth() {
-            if (!valid) return 0;
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             int maxTextWidth = 0;
@@ -166,8 +164,12 @@ public class KillLogModule implements Module {
 
         @Override
         public int getHeight() {
-            if (!valid) return 0;
             return target.size() * 10 + 10;
+        }
+
+        @Override
+        public boolean isVisible() {
+            return valid;
         }
 
         @Override

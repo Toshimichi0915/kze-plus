@@ -123,7 +123,6 @@ public class WeaponInfoModule implements Module {
 
         @Override
         public void render(int x, int y, MatrixStack stack, float tickDelta) {
-            if (!valid) return;
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
@@ -133,14 +132,17 @@ public class WeaponInfoModule implements Module {
 
         @Override
         public int getWidth() {
-            if (!valid) return 0;
             return weaponContextLength + 10;
         }
 
         @Override
         public int getHeight() {
-            if (!valid) return 0;
             return 30;
+        }
+
+        @Override
+        public boolean isVisible() {
+            return valid;
         }
 
         @Override
@@ -241,7 +243,6 @@ public class WeaponInfoModule implements Module {
 
         @Override
         public void render(int x, int y, MatrixStack stack, float tickDelta) {
-            if (!valid) return;
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
@@ -251,14 +252,17 @@ public class WeaponInfoModule implements Module {
 
         @Override
         public int getWidth() {
-            if (!valid) return 0;
             return textWidth + 20;
         }
 
         @Override
         public int getHeight() {
-            if (!valid) return 0;
             return 20;
+        }
+
+        @Override
+        public boolean isVisible() {
+            return valid;
         }
 
         @Override

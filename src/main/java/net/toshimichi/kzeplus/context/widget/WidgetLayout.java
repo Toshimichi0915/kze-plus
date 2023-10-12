@@ -1,6 +1,8 @@
 package net.toshimichi.kzeplus.context.widget;
 
 import lombok.Data;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
@@ -23,19 +25,45 @@ public class WidgetLayout {
 
     public void relocate(WidgetLayout parent, boolean placeholder) {
         widget.update(placeholder);
-        double parentX = parent == null ? 0 : parent.getAbsoluteX();
-        double parentY = parent == null ? 0 : parent.getAbsoluteY();
-        double parentW = parent == null ? 0 : parent.getWidget().getWidth();
-        double parentH = parent == null ? 0 : parent.getWidget().getHeight();
 
-        absoluteX = (int) (x + parentX + parentW * anchor.getX() - widget.getWidth() * origin.getX());
-        absoluteY = (int) (y + parentY + parentH * anchor.getY() - widget.getHeight() * origin.getY());
+        Window window = MinecraftClient.getInstance().getWindow();
+
+        int x, y;
+        double parentX, parentY, parentWidth, parentHeight;
+        if (parent == null) {
+            x = this.x;
+            y = this.y;
+            parentX = 0;
+            parentY = 0;
+            parentWidth = window.getScaledWidth();
+            parentHeight = window.getScaledHeight();
+        } else {
+            parentX = parent.getAbsoluteX();
+            parentY = parent.getAbsoluteY();
+            if (parent.getWidget().isVisible()) {
+                x = this.x;
+                y = this.y;
+                parentWidth = parent.getWidget().getWidth();
+                parentHeight = parent.getWidget().getHeight();
+            } else {
+                x = 0;
+                y = 0;
+                parentWidth = 0;
+                parentHeight = 0;
+            }
+        }
+
+        absoluteX = (int) (x + parentX + parentWidth * anchor.getX() - widget.getWidth() * origin.getX());
+        absoluteY = (int) (y + parentY + parentHeight * anchor.getY() - widget.getHeight() * origin.getY());
 
         children.forEach(child -> child.relocate(this, placeholder));
     }
 
     public void render(MatrixStack stack, float tickDelta) {
+        if (widget.isVisible()) {
             widget.render(absoluteX, absoluteY, stack, tickDelta);
+        }
+
         children.forEach((child) -> child.render(stack, tickDelta));
     }
 }

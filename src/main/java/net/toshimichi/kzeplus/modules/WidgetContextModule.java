@@ -5,6 +5,8 @@ import net.toshimichi.kzeplus.context.widget.WidgetLayout;
 import net.toshimichi.kzeplus.events.EventTarget;
 import net.toshimichi.kzeplus.events.InGameHudRenderEvent;
 
+import java.util.ArrayDeque;
+
 public class WidgetContextModule implements Module {
 
     private boolean flushed;

@@ -65,6 +65,7 @@ public class PlayInfoModule implements Module {
             showPlayTime = KzePlus.getInstance().getOptions().isShowPlayTime();
             showTeam = KzePlus.getInstance().getOptions().isShowTeam();
             showBonus = KzePlus.getInstance().getOptions().isShowBonus();
+
         }
 
         @Override
@@ -131,7 +132,7 @@ public class PlayInfoModule implements Module {
                 if (showReward || showExp || showPlayTime) delta += 10;
                 InGameHud.drawTextWithShadow(stack, textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", x + 5, y + delta, 0xffffff);
                 delta += 10;
-                InGameHud.drawTextWithShadow(stack, textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", y + 5, y + delta, 0xffffff);
+                InGameHud.drawTextWithShadow(stack, textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", x + 5, y + delta, 0xffffff);
 
                 delta += 10;
                 if (showBonus) delta += 10;
@@ -156,9 +157,12 @@ public class PlayInfoModule implements Module {
 
         @Override
         public int getHeight() {
-            // TODO better margin calculation
-            if (!showReward && !showExp && !showPlayTime && !showTeam && !showBonus) return -5;
             return height;
+        }
+
+        @Override
+        public boolean isVisible() {
+            return showReward || showExp || showPlayTime || showTeam || showBonus;
         }
 
         @Override
