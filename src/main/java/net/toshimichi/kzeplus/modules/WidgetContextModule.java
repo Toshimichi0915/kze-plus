@@ -1,5 +1,6 @@
 package net.toshimichi.kzeplus.modules;
 
+import net.minecraft.client.MinecraftClient;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.widget.WidgetLayout;
 import net.toshimichi.kzeplus.events.EventTarget;
@@ -25,6 +26,8 @@ public class WidgetContextModule implements Module {
             KzePlus.getInstance().getWidgetContext().flush();
             flushed = true;
         }
+
+        if (MinecraftClient.getInstance().options.debugEnabled) return;
 
         WidgetLayout root = KzePlus.getInstance().getWidgetContext().getRoot();
         root.relocate(null, false);
