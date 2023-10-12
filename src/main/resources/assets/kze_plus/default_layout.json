@@ -21,20 +21,30 @@
       "y": 20,
       "children": [
         {
-          "id": "weapon_info",
+          "id": "vote_info",
           "anchor": "BOTTOM_LEFT",
           "origin": "TOP_LEFT",
           "x": 0,
           "y": 10,
-          "children": []
-        },
-        {
-          "id": "timer_info",
-          "anchor": "BOTTOM_LEFT",
-          "origin": "TOP_LEFT",
-          "x": 0,
-          "y": 50,
-          "children": []
+          "children": [
+            {
+              "id": "weapon_info",
+              "anchor": "BOTTOM_LEFT",
+              "origin": "TOP_LEFT",
+              "x": 0,
+              "y": 10,
+              "children": [
+                {
+                  "id": "timer_info",
+                  "anchor": "BOTTOM_LEFT",
+                  "origin": "TOP_LEFT",
+                  "x": 0,
+                  "y": 10,
+                  "children": []
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "kill_log",

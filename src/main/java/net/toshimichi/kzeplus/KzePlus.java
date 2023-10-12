@@ -23,6 +23,7 @@ import net.toshimichi.kzeplus.modules.Module;
 import net.toshimichi.kzeplus.modules.PlayInfoModule;
 import net.toshimichi.kzeplus.modules.TimerInfoModule;
 import net.toshimichi.kzeplus.modules.VisibiiltyToggleModule;
+import net.toshimichi.kzeplus.modules.VoteInfoModule;
 import net.toshimichi.kzeplus.modules.WeaponContextModule;
 import net.toshimichi.kzeplus.modules.WeaponInfoModule;
 import net.toshimichi.kzeplus.modules.WidgetContextModule;
@@ -96,6 +97,7 @@ public class KzePlus implements ModInitializer {
         registerModule(new TimerInfoModule());
         registerModule(new KillLogModule());
         registerModule(new VisibiiltyToggleModule());
+        registerModule(new VoteInfoModule());
         registerModule(new WeaponContextModule());
         registerModule(new WeaponInfoModule());
         registerModule(new WidgetContextModule());

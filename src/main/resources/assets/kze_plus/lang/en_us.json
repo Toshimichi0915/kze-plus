@@ -20,5 +20,6 @@
   "kze_plus.options.show_exp": "経験値を表示する",
   "kze_plus.options.show_play_time": "プレイ時間を表示する",
   "kze_plus.options.show_team": "チームを表示する",
-  "kze_plus.options.show_bonus": "防衛・被弾ボーナスを表示する"
+  "kze_plus.options.show_bonus": "防衛・被弾ボーナスを表示する",
+  "kze_plus.options.show_vote": "投票を表示する"
 }

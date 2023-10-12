@@ -46,6 +46,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.show_play_time", options.isShowPlayTime(), options::setShowPlayTime),
                 SimpleOption.ofBoolean("kze_plus.options.show_team", options.isShowTeam(), options::setShowTeam),
                 SimpleOption.ofBoolean("kze_plus.options.show_bonus", options.isShowBonus(), options::setShowBonus),
+                SimpleOption.ofBoolean("kze_plus.options.show_vote", options.isShowVote(), options::setShowVote),
         };
 
         list = new OptionListWidget(client, width, height, 32, height - 32, 25);
