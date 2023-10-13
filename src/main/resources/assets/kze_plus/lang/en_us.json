@@ -11,6 +11,8 @@
   "kze_plus.options.hide_kill_message": "キルログを非表示にする",
   "kze_plus.options.show_kill_log": "modのキルログを表示する",
   "kze_plus.options.show_timer": "タイマーを表示する",
+  "kze_plus.options.show_reload_progress": "リロード時間を表示する",
+  "kze_plus.options.show_weapon_info": "武器の情報を表示する",
   "kze_plus.visibility.full": "全て",
   "kze_plus.visibility.outline": "半透明",
   "kze_plus.visibility.none": "非表示",

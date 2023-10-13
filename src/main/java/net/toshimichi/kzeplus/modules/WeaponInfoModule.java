@@ -90,7 +90,7 @@ public class WeaponInfoModule implements Module {
                 return;
             }
 
-            if (!enabled) {
+            if (!KzePlus.getInstance().getOptions().isShowWeaponInfo()) {
                 valid = false;
                 return;
             }
@@ -173,7 +173,7 @@ public class WeaponInfoModule implements Module {
                 return;
             }
 
-            if (!enabled) {
+            if (!KzePlus.getInstance().getOptions().isShowReloadProgress()) {
                 valid = false;
                 return;
             }

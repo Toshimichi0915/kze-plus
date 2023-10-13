@@ -65,12 +65,10 @@ public class PlayInfoModule implements Module {
             showPlayTime = KzePlus.getInstance().getOptions().isShowPlayTime();
             showTeam = KzePlus.getInstance().getOptions().isShowTeam();
             showBonus = KzePlus.getInstance().getOptions().isShowBonus();
-
         }
 
         @Override
         public void render(int x, int y, MatrixStack stack, float tickDelta) {
-            if (!enabled) return;
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             int reward = KzePlus.getInstance().getGameContextRegistry().getGameContextHistories()

@@ -35,6 +35,8 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.hide_kill_message", options.isHideKillMessage(), options::setHideKillMessage),
                 SimpleOption.ofBoolean("kze_plus.options.show_kill_log", options.isShowKillLog(), options::setShowKillLog),
                 SimpleOption.ofBoolean("kze_plus.options.show_timer", options.isShowTimer(), options::setShowTimer),
+                SimpleOption.ofBoolean("kze_plus.options.show_reload_progress", options.isShowReloadProgress(), options::setShowReloadProgress),
+                SimpleOption.ofBoolean("kze_plus.options.show_weapon_info", options.isShowWeaponInfo(), options::setShowWeaponInfo),
                 new SimpleOption<>("kze_plus.options.gun_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,
                         SimpleOption.DoubleSliderCallbacks.INSTANCE, options.getGunSoundVolume(), options::setGunSoundVolume),
                 new SimpleOption<>("kze_plus.options.damage_sound_volume", SimpleOption.emptyTooltip(), KzeOptionsScreen::getPercentValueText,

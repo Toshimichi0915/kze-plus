@@ -16,6 +16,8 @@ public class KzeOptions {
     private boolean hideKillMessage = true;
     private boolean showKillLog = true;
     private boolean showTimer = true;
+    private boolean showReloadProgress = true;
+    private boolean showWeaponInfo = true;
     private boolean showReward = true;
     private boolean showExp = true;
     private boolean showPlayTime = true;

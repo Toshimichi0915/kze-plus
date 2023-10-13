@@ -151,7 +151,7 @@ public class TimerInfoModule implements Module {
                 valid = true;
                 target = example;
             } else {
-                valid = enabled && !timers.isEmpty() && KzePlus.getInstance().getOptions().isShowTimer();
+                valid = !timers.isEmpty() && KzePlus.getInstance().getOptions().isShowTimer();
                 target = timers;
             }
         }

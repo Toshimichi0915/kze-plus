@@ -132,7 +132,7 @@ public class KillLogModule implements Module {
                 valid = true;
             } else {
                 target = killLogs;
-                valid = enabled && KzePlus.getInstance().getOptions().isShowKillLog() && !target.isEmpty();
+                valid = KzePlus.getInstance().getOptions().isShowKillLog() && !target.isEmpty();
             }
         }
 
