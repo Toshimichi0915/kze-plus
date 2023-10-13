@@ -14,14 +14,14 @@
       "children": []
     },
     {
-      "id": "play_info",
+      "id": "vote_info",
       "anchor": "TOP_LEFT",
       "origin": "TOP_LEFT",
       "x": 20,
       "y": 20,
       "children": [
         {
-          "id": "vote_info",
+          "id": "play_info",
           "anchor": "BOTTOM_LEFT",
           "origin": "TOP_LEFT",
           "x": 0,
