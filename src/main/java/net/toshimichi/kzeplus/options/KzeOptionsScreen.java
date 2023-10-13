@@ -47,6 +47,7 @@ public class KzeOptionsScreen extends GameOptionsScreen {
                 SimpleOption.ofBoolean("kze_plus.options.show_team", options.isShowTeam(), options::setShowTeam),
                 SimpleOption.ofBoolean("kze_plus.options.show_bonus", options.isShowBonus(), options::setShowBonus),
                 SimpleOption.ofBoolean("kze_plus.options.show_next_vote", options.isShowNextVote(), options::setShowNextVote),
+                SimpleOption.ofBoolean("kze_plus.options.show_next_vote_only_when_available", options.isShowNextVoteOnlyWhenAvailable(), options::setShowNextVoteOnlyWhenAvailable),
                 SimpleOption.ofBoolean("kze_plus.options.hide_vote_message", options.isHideVoteMessage(), options::setHideVoteMessage),
         };
 

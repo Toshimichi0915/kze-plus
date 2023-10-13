@@ -132,7 +132,7 @@ public class WeaponInfoModule implements Module {
 
         @Override
         public int getWidth() {
-            return weaponContextLength + 10;
+            return Math.max(125, weaponContextLength + 10);
         }
 
         @Override

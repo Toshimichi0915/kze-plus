@@ -127,19 +127,21 @@ public class VoteInfoModule implements Module {
 
         @Override
         public void update(boolean placeholder) {
-            this.valid = successful && KzePlus.getInstance().getOptions().isShowNextVote() || placeholder;
             if (placeholder) {
                 canVote = true;
                 message = "投票できます";
+                valid = true;
             } else if (nextVoteTicks > 0) {
                 canVote = false;
                 int hours = nextVoteTicks / 20 / (60 * 60);
                 int minutes = nextVoteTicks / 20 / 60 % 60;
                 int seconds = nextVoteTicks / 20 % 60;
                 message = String.format("投票可能まで: %02d:%02d:%02d", hours, minutes, seconds);
+                valid = KzePlus.getInstance().getOptions().isShowNextVote() && !KzePlus.getInstance().getOptions().isShowNextVoteOnlyWhenAvailable();
             } else {
                 canVote = true;
                 message = "投票できます";
+                valid = KzePlus.getInstance().getOptions().isShowNextVote();
             }
         }
 
