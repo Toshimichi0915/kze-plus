@@ -14,35 +14,26 @@
       "children": []
     },
     {
-      "id": "vote_info",
-      "anchor": "TOP_LEFT",
+      "id": "play_info",
+      "anchor": "BOTTOM_LEFT",
       "origin": "TOP_LEFT",
-      "x": 20,
-      "y": 20,
+      "x": 0,
+      "y": 10,
       "children": [
         {
-          "id": "play_info",
+          "id": "weapon_info",
           "anchor": "BOTTOM_LEFT",
           "origin": "TOP_LEFT",
           "x": 0,
           "y": 10,
           "children": [
             {
-              "id": "weapon_info",
+              "id": "timer_info",
               "anchor": "BOTTOM_LEFT",
               "origin": "TOP_LEFT",
               "x": 0,
               "y": 10,
-              "children": [
-                {
-                  "id": "timer_info",
-                  "anchor": "BOTTOM_LEFT",
-                  "origin": "TOP_LEFT",
-                  "x": 0,
-                  "y": 10,
-                  "children": []
-                }
-              ]
+              "children": []
             }
           ]
         }

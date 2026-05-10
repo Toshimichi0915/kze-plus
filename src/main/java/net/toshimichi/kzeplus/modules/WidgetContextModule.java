@@ -27,10 +27,10 @@ public class WidgetContextModule implements Module {
             flushed = true;
         }
 
-        if (MinecraftClient.getInstance().options.debugEnabled) return;
+        if (MinecraftClient.getInstance().getDebugHud().shouldShowDebugHud()) return;
 
         WidgetLayout root = KzePlus.getInstance().getWidgetContext().getRoot();
         root.relocate(null, false);
-        root.render(e.getMatrices(), e.getTickDelta());
+        root.render(e.getContext(), e.getTickDelta());
     }
 }

@@ -1,18 +1,10 @@
 package net.toshimichi.kzeplus.modules;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
 import net.toshimichi.kzeplus.context.widget.Widget;
@@ -24,10 +16,9 @@ import java.util.Map;
 public class WeaponInfoModule implements Module {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
-    private static final int DEG_STEP = 3;
-    private static final int INNER_CIRCLE_SIZE = 3;
-    private static final int OUTER_CIRCLE_SIZE = 5;
-    private static final int RELOAD_COLOR = 0xfc5454;
+    private static final double CIRCLE_OUTER_RADIUS = 5.5;
+    private static final double CIRCLE_INNER_RADIUS = 3.5;
+    private static final int RELOAD_COLOR = 0xfffc5454;
     private boolean enabled;
 
     @Override
@@ -122,12 +113,12 @@ public class WeaponInfoModule implements Module {
         }
 
         @Override
-        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+        public void render(int x, int y, DrawContext context, float tickDelta) {
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
-            textRenderer.drawWithShadow(stack, mainStatus, x + 5, y + 5, mainReloading ? RELOAD_COLOR : 0xffffff);
-            textRenderer.drawWithShadow(stack, subStatus, x + 5, y + 15, subReloading ? RELOAD_COLOR : 0xffffff);
+            context.fill(x, y, x + getWidth(), y + getHeight(), 0x80000000);
+            context.drawTextWithShadow(textRenderer, mainStatus, x + 5, y + 5, mainReloading ? RELOAD_COLOR : 0xffffffff);
+            context.drawTextWithShadow(textRenderer, subStatus, x + 5, y + 15, subReloading ? RELOAD_COLOR : 0xffffffff);
         }
 
         @Override
@@ -183,7 +174,7 @@ public class WeaponInfoModule implements Module {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (player == null) return;
 
-            int slot = player.getInventory().selectedSlot;
+            int slot = player.getInventory().getSelectedSlot();
             WeaponContext weaponContext;
             if (slot == 0) {
                 weaponContext = KzePlus.getInstance().getMainWeaponContext();
@@ -207,47 +198,49 @@ public class WeaponInfoModule implements Module {
             valid = true;
         }
 
-        private void drawProgressCircle(double progress, double centerX, double centerY) {
-            double deg = 360 * progress;
+        private void drawProgressCircle(DrawContext context, double progress, int centerX, int centerY) {
+            if (progress <= 0) return;
+            double endAngle = 2 * Math.PI * progress;
+            int bound = (int) Math.ceil(CIRCLE_OUTER_RADIUS) + 1;
 
-            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
-            RenderSystem.enableBlend();
-            RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            for (int dy = -bound; dy <= bound; dy++) {
+                for (int dx = -bound; dx <= bound; dx++) {
+                    double dist = Math.sqrt(dx * dx + dy * dy);
 
-            for (int i = 0; i < deg; i += DEG_STEP) {
-                double angle = Math.toRadians(i);
-                double angleNext = Math.toRadians(i + DEG_STEP);
+                    double radialCoverage;
+                    if (dist <= CIRCLE_INNER_RADIUS - 0.5 || dist >= CIRCLE_OUTER_RADIUS + 0.5) continue;
+                    else if (dist < CIRCLE_INNER_RADIUS) radialCoverage = dist - (CIRCLE_INNER_RADIUS - 0.5);
+                    else if (dist > CIRCLE_OUTER_RADIUS) radialCoverage = (CIRCLE_OUTER_RADIUS + 0.5) - dist;
+                    else radialCoverage = 1.0;
 
-                double x1 = Math.cos(angle) * OUTER_CIRCLE_SIZE;
-                double y1 = Math.sin(angle) * OUTER_CIRCLE_SIZE;
+                    double angle = Math.atan2(dy, dx);
+                    if (angle < 0) angle += 2 * Math.PI;
+                    if (angle > endAngle) continue;
 
-                double x2 = Math.cos(angle) * INNER_CIRCLE_SIZE;
-                double y2 = Math.sin(angle) * INNER_CIRCLE_SIZE;
+                    double angleCoverage = 1.0;
+                    double pixelAngleWidth = 1.0 / Math.max(dist, 1.0);
+                    double angleDelta = endAngle - angle;
+                    if (angleDelta < pixelAngleWidth) {
+                        angleCoverage = angleDelta / pixelAngleWidth;
+                    }
 
-                double x3 = Math.cos(angleNext) * INNER_CIRCLE_SIZE;
-                double y3 = Math.sin(angleNext) * INNER_CIRCLE_SIZE;
+                    double coverage = Math.max(0, Math.min(1, radialCoverage * angleCoverage));
+                    int alpha = (int) Math.round(coverage * 255);
+                    if (alpha <= 0) continue;
+                    int color = (alpha << 24) | 0x00ffffff;
 
-                double x4 = Math.cos(angleNext) * OUTER_CIRCLE_SIZE;
-                double y4 = Math.sin(angleNext) * OUTER_CIRCLE_SIZE;
-
-                buffer.vertex(centerX + x1, centerY + y1, 0).color(0xffffffff).next();
-                buffer.vertex(centerX + x2, centerY + y2, 0).color(0xffffffff).next();
-                buffer.vertex(centerX + x3, centerY + y3, 0).color(0xffffffff).next();
-                buffer.vertex(centerX + x4, centerY + y4, 0).color(0xffffffff).next();
+                    context.fill(centerX + dx, centerY + dy, centerX + dx + 1, centerY + dy + 1, color);
+                }
             }
-
-            BufferRenderer.drawWithGlobalProgram(buffer.end());
-            RenderSystem.disableBlend();
         }
 
         @Override
-        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+        public void render(int x, int y, DrawContext context, float tickDelta) {
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
-            drawProgressCircle((totalReloadTicks - remainingTicks) / totalReloadTicks, x + 10, y + 10);
-            textRenderer.drawWithShadow(stack, text, x + 20, y + 5, 0xffffff);
+            context.fill(x, y, x + getWidth(), y + getHeight(), 0x80000000);
+            drawProgressCircle(context, (totalReloadTicks - remainingTicks) / totalReloadTicks, x + 10, y + 10);
+            context.drawTextWithShadow(textRenderer, text, x + 20, y + 5, 0xffffffff);
         }
 
         @Override

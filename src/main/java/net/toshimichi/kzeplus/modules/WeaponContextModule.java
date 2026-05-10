@@ -90,7 +90,7 @@ public class WeaponContextModule implements Module {
             KzePlus.getInstance().getWeaponRegistry().save(weaponInfo);
         }
 
-        if (reloading && player.getInventory().selectedSlot == context.getSlot()) {
+        if (reloading && player.getInventory().getSelectedSlot() == context.getSlot()) {
             context.setReloadTicks(context.getReloadTicks() + 1);
         }
 

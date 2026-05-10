@@ -2,20 +2,17 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.toshimichi.kzeplus.mixins",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "client": [
-    "MixinBackgroundRenderer",
     "MixinClientWorld",
     "MixinEntity",
     "MixinGameOptions",
     "MixinInGameHud",
     "MixinLanguage",
-    "MixinLivingEntity",
     "MixinLivingEntityRenderer",
     "MixinMessageHandler",
     "MixinMinecraftClient",
-    "MixinOptionsScreen",
-    "MixinServerResourcePackProvider"
+    "MixinOptionsScreen"
   ],
   "injectors": {
     "defaultRequire": 1

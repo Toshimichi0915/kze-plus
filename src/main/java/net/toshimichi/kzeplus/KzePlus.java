@@ -9,6 +9,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.Identifier;
 import net.toshimichi.kzeplus.context.game.GameContextRegistry;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
 import net.toshimichi.kzeplus.context.weapon.WeaponRegistry;
@@ -23,7 +24,6 @@ import net.toshimichi.kzeplus.modules.Module;
 import net.toshimichi.kzeplus.modules.PlayInfoModule;
 import net.toshimichi.kzeplus.modules.TimerInfoModule;
 import net.toshimichi.kzeplus.modules.VisibiiltyToggleModule;
-import net.toshimichi.kzeplus.modules.VoteInfoModule;
 import net.toshimichi.kzeplus.modules.WeaponContextModule;
 import net.toshimichi.kzeplus.modules.WeaponInfoModule;
 import net.toshimichi.kzeplus.modules.WidgetContextModule;
@@ -43,7 +43,7 @@ public class KzePlus implements ModInitializer {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("./kzeplus.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public static final String KZE_CATEGORY = "kze_plus.key.categories.kze_plus";
+    public static final KeyBinding.Category KZE_CATEGORY = KeyBinding.Category.create(Identifier.of("kze_plus", "kze_plus"));
     public static final KeyBinding VISIBILITY_TOGGLE_KEY = new KeyBinding("kze_plus.key.toggle_visibility", GLFW.GLFW_KEY_V, KZE_CATEGORY);
 
     @Getter private static KzePlus instance;
@@ -97,7 +97,6 @@ public class KzePlus implements ModInitializer {
         registerModule(new TimerInfoModule());
         registerModule(new KillLogModule());
         registerModule(new VisibiiltyToggleModule());
-        registerModule(new VoteInfoModule());
         registerModule(new WeaponContextModule());
         registerModule(new WeaponInfoModule());
         registerModule(new WidgetContextModule());

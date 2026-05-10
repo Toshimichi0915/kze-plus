@@ -3,10 +3,9 @@ package net.toshimichi.kzeplus.modules;
 import lombok.Data;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.toshimichi.kzeplus.KzePlus;
@@ -25,7 +24,7 @@ import java.util.regex.Pattern;
 public class KillLogModule implements Module {
 
     private static final Pattern MAGAZINE_MESSAGE_PATTERN = Pattern.compile("^》 [^ ]+? 弾が切れた！$");
-    private static final Pattern KILL_MESSAGE_PATTERN = Pattern.compile("^》(?:FirstBlood! )?([^ ]+?) killed by ([^ ]+?) \\(([^ ]+?) ?\\)$");
+    private static final Pattern KILL_MESSAGE_PATTERN = Pattern.compile("^》 (?:FirstBlood! )?([^ ]+?) killed by ([^ ]+?)\\(([^ ]+?) ?\\)$");
     private static final int MAX_KILL_LOGS = 5;
     private static final int KILL_LOG_DURATION = 200;
 
@@ -48,14 +47,6 @@ public class KillLogModule implements Module {
     @Override
     public Map<String, Widget> getWidgets() {
         return Map.of("kill_log", new KillLogWidget());
-    }
-
-    @EventTarget
-    private void hideMagazineMessage(ChatEvent e) {
-        String text = e.getText().getString();
-        if (!KzePlus.getInstance().getOptions().isHideMagazineMessage()) return;
-        if (!MAGAZINE_MESSAGE_PATTERN.matcher(text).find()) return;
-        e.setCancelled(true);
     }
 
     @EventTarget
@@ -105,8 +96,9 @@ public class KillLogModule implements Module {
         public Text toText() {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-            boolean didKill = player != null && killer.equals(player.getEntityName());
-            boolean wasKilled = player != null && victim.equals(player.getEntityName());
+            String selfName = player != null ? player.getGameProfile().name() : null;
+            boolean didKill = selfName != null && killer.equals(selfName);
+            boolean wasKilled = selfName != null && victim.equals(selfName);
 
             return Text.literal(killer).styled(style -> style.withColor(didKill ? SELF_COLOR : killerRole.getColor()))
                     .append(Text.literal(" -> ").formatted(Formatting.WHITE))
@@ -137,15 +129,15 @@ public class KillLogModule implements Module {
         }
 
         @Override
-        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+        public void render(int x, int y, DrawContext context, float tickDelta) {
             if (MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
 
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
+            context.fill(x, y, x + getWidth(), y + getHeight(), 0x80000000);
 
             for (int i = 0; i < target.size(); i++) {
                 KillLog killLog = target.get(i);
-                InGameHud.drawTextWithShadow(stack, textRenderer, killLog.toText(), x + 5, y + 5 + i * 10, 0xFFFFFF);
+                context.drawTextWithShadow(textRenderer, killLog.toText(), x + 5, y + 5 + i * 10, 0xffffffff);
             }
         }
 

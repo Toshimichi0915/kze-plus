@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WidgetContext {
 
-    private static final Identifier DEFAULT_LAYOUT = new Identifier("kze_plus", "default_layout.json");
+    private static final Identifier DEFAULT_LAYOUT = Identifier.of("kze_plus", "default_layout.json");
     private static final Path SAVE_PATH = Path.of("./kze_plus/widgets.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final Map<String, Widget> unresolved = new HashMap<>();

@@ -29,8 +29,10 @@ public class MixinLanguage {
     @Final @Shadow
     private static Gson GSON;
 
-    @Inject(method = "load", at = @At("HEAD"))
+    @Inject(method = "load(Ljava/io/InputStream;Ljava/util/function/BiConsumer;)V", at = @At("HEAD"))
     private static void addCustomKeys(InputStream inputStream, BiConsumer<String, String> entryConsumer, CallbackInfo ci) {
+        if (KzePlus.getInstance() == null) return;
+
         Path path = KzePlus.getInstance()
                 .getModContainer()
                 .findPath("assets/kze_plus/lang/en_us.json")

@@ -3,7 +3,6 @@ package net.toshimichi.kzeplus.modules;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.game.GameContext;
 import net.toshimichi.kzeplus.context.weapon.WeaponContext;
@@ -21,13 +20,10 @@ import java.util.regex.Pattern;
 
 public class GameContextModule implements Module {
 
-    private static final Identifier GAME_START_SOUND = Identifier.of("minecraft", "count.siren");
-    private static final Identifier HUMAN_WIN_SOUND = Identifier.of("minecraft", "count.hwin");
-    private static final Identifier ZOMBIE_WIN_SOUND = Identifier.of("minecraft", "count.zwin");
-    private static final Pattern REWARD_PATTERN = Pattern.compile("》 +?合計 +?\\+?(\\d+?)円");
-    private static final Pattern EXP_PATTERN = Pattern.compile("》 +?取得パーク経験値 +?\\+?(\\d+?) \\(ナイフ武器\\)");
-    private static final Pattern DEFENSE_BONUS_PATTERN = Pattern.compile("》 +?防衛ボーナス +?\\+?(\\d+?)円");
-    private static final Pattern HIT_BONUS_PATTERN = Pattern.compile("》 +?被弾ボーナス +?\\+?(\\d+?)円");
+    private static final Pattern GAME_START_PATTERN = Pattern.compile("》[a-zA-Z0-9]+? infected.");
+    private static final Pattern REWARD_PATTERN = Pattern.compile("》 =+?\n》 試合結果\n》 報酬 : ([0-9,]+?)");
+    private static final Pattern DEFENSE_BONUS_PATTERN = Pattern.compile("》 防衛ボーナス \\+([0-9,]+?)");
+    private static final Pattern HIT_BONUS_PATTERN = Pattern.compile("》 被弾ボーナス \\+([0-9,]+?)");
     private double prevHealth;
 
     @Override
@@ -83,8 +79,9 @@ public class GameContextModule implements Module {
     }
 
     @EventTarget
-    private void createGameContext(SoundPlayEvent e) {
-        if (!e.getSound().getId().equals(GAME_START_SOUND)) return;
+    private void createGameContext(ChatEvent e) {
+        String text = e.getText().getString();
+        if (!GAME_START_PATTERN.matcher(text).matches()) return;
         KzePlus.getInstance().getGameContextRegistry().startGameContext();
     }
 
@@ -98,17 +95,6 @@ public class GameContextModule implements Module {
 
         if (main.getName() != null) context.setMainWeaponName(main.getName());
         if (sub.getName() != null) context.setSubWeaponName(sub.getName());
-    }
-
-    @EventTarget
-    private void updateGameEnd(SoundPlayEvent e) {
-        Identifier id = e.getSound().getId();
-        if (!id.equals(HUMAN_WIN_SOUND) && !id.equals(ZOMBIE_WIN_SOUND)) return;
-
-        GameContext context = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
-        if (context == null) return;
-
-        context.setHumanWin(id.equals(HUMAN_WIN_SOUND));
     }
 
     @EventTarget
@@ -129,7 +115,7 @@ public class GameContextModule implements Module {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
-        int slot = player.getInventory().selectedSlot;
+        int slot = player.getInventory().getSelectedSlot();
 
         if (slot == 0) context.setMainHitCount(context.getMainHitCount() + 1);
         else if (slot == 1) context.setSubHitCount(context.getSubHitCount() + 1);
@@ -176,12 +162,6 @@ public class GameContextModule implements Module {
         matcher = HIT_BONUS_PATTERN.matcher(text);
         if (matcher.find()) {
             context.setHitBonus(context.getHitBonus() + Integer.parseInt(matcher.group(1)));
-        }
-
-        matcher = EXP_PATTERN.matcher(text);
-        if (matcher.find()) {
-            context.setExp(context.getExp() + Integer.parseInt(matcher.group(1)));
-            end = true;
         }
 
         if (end) {

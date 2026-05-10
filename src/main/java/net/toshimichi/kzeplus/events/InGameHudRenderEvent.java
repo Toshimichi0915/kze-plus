@@ -1,11 +1,11 @@
 package net.toshimichi.kzeplus.events;
 
 import lombok.Data;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 
 @Data
 public class InGameHudRenderEvent implements Event {
 
-    private final MatrixStack matrices;
+    private final DrawContext context;
     private final float tickDelta;
 }

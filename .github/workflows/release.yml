@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 21 ]
         os: [ ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     permissions:

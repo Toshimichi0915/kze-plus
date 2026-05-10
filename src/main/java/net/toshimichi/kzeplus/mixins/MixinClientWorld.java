@@ -21,7 +21,7 @@ public class MixinClientWorld {
     private void applyGunSoundVolume(Args args) {
         SoundEvent event = args.get(0);
         float volume = args.get(2);
-        if (event.getId().getNamespace().equals("minecraft") && KzePlus.getInstance().getGunShotSounds().contains(event.getId().getPath())) {
+        if (event.id().getNamespace().equals("minecraft") && KzePlus.getInstance().getGunShotSounds().contains(event.id().getPath())) {
             args.set(2, (float) (volume * KzePlus.getInstance().getOptions().getGunSoundVolume()));
         } else if (event == SoundEvents.ENTITY_PLAYER_HURT && KzeUtils.isInGame()) {
             args.set(2, (float) (volume * KzePlus.getInstance().getOptions().getDamageSoundVolume()));

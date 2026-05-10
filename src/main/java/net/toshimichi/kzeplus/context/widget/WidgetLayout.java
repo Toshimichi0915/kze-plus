@@ -2,8 +2,8 @@ package net.toshimichi.kzeplus.context.widget;
 
 import lombok.Data;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +59,11 @@ public class WidgetLayout {
         children.forEach(child -> child.relocate(this, placeholder));
     }
 
-    public void render(MatrixStack stack, float tickDelta) {
+    public void render(DrawContext context, float tickDelta) {
         if (widget.isVisible()) {
-            widget.render(absoluteX, absoluteY, stack, tickDelta);
+            widget.render(absoluteX, absoluteY, context, tickDelta);
         }
 
-        children.forEach((child) -> child.render(stack, tickDelta));
+        children.forEach((child) -> child.render(context, tickDelta));
     }
 }

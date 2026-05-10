@@ -1,9 +1,9 @@
 package net.toshimichi.kzeplus.context.widget;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class ScreenWidget implements Widget {
     }
 
     @Override
-    public void render(int x, int y, MatrixStack stack, float tickDelta) {
+    public void render(int x, int y, DrawContext context, float tickDelta) {
 
     }
 

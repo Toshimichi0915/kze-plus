@@ -2,10 +2,9 @@ package net.toshimichi.kzeplus.modules;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.util.math.MatrixStack;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.game.GameContext;
 import net.toshimichi.kzeplus.context.widget.Widget;
@@ -53,7 +52,6 @@ public class PlayInfoModule implements Module {
 
         private int height;
         private boolean showReward;
-        private boolean showExp;
         private boolean showPlayTime;
         private boolean showTeam;
         private boolean showBonus;
@@ -61,24 +59,18 @@ public class PlayInfoModule implements Module {
         @Override
         public void update(boolean placeholder) {
             showReward = KzePlus.getInstance().getOptions().isShowReward();
-            showExp = KzePlus.getInstance().getOptions().isShowExp();
             showPlayTime = KzePlus.getInstance().getOptions().isShowPlayTime();
             showTeam = KzePlus.getInstance().getOptions().isShowTeam();
             showBonus = KzePlus.getInstance().getOptions().isShowBonus();
         }
 
         @Override
-        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+        public void render(int x, int y, DrawContext context, float tickDelta) {
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             int reward = KzePlus.getInstance().getGameContextRegistry().getGameContextHistories()
                     .stream()
                     .mapToInt(GameContext::getReward)
-                    .sum();
-
-            int exp = KzePlus.getInstance().getGameContextRegistry().getGameContextHistories()
-                    .stream()
-                    .mapToInt(GameContext::getExp)
                     .sum();
 
             int defenseBonus = 0;
@@ -87,33 +79,27 @@ public class PlayInfoModule implements Module {
             int hitBonus = 0;
             int hitCount = 0;
 
-            GameContext context = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
-            if (context != null) {
-                defenseBonus = context.getEstimatedDefenseBonus();
-                mainDefenseCount = context.getMainHitCount();
-                subDefenseCount = context.getSubHitCount();
-                hitBonus = context.getEstimatedHitBonus();
-                hitCount = context.getShotCount();
+            GameContext gameContext = KzePlus.getInstance().getGameContextRegistry().getCurrentGameContext();
+            if (gameContext != null) {
+                defenseBonus = gameContext.getEstimatedDefenseBonus();
+                mainDefenseCount = gameContext.getMainHitCount();
+                subDefenseCount = gameContext.getSubHitCount();
+                hitBonus = gameContext.getEstimatedHitBonus();
+                hitCount = gameContext.getShotCount();
             }
 
-            if (!showReward && !showExp && !showPlayTime && !showTeam && !showBonus) {
+            if (!showReward && !showPlayTime && !showTeam && !showBonus) {
                 height = 0;
                 return;
             }
-            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
+            context.fill(x, y, x + getWidth(), y + getHeight(), 0x80000000);
 
             int delta = 5;
 
 
             // reward
             if (showReward) {
-                InGameHud.drawTextWithShadow(stack, textRenderer, "取得金額: " + reward + "円", x + 5, y + delta, 0xffffff);
-                delta += 10;
-            }
-
-            // exp
-            if (showExp) {
-                InGameHud.drawTextWithShadow(stack, textRenderer, "取得経験値: " + exp, x + 5, y + delta, 0xffffff);
+                context.drawTextWithShadow(textRenderer, "取得金額: " + reward + "円", x + 5, y + delta, 0xffffffff);
                 delta += 10;
             }
 
@@ -121,16 +107,16 @@ public class PlayInfoModule implements Module {
             if (showPlayTime) {
                 Duration duration = Duration.ofSeconds(playTime / 20);
                 String time = "%02d:%02d:%02d".formatted(duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart());
-                InGameHud.drawTextWithShadow(stack, textRenderer, "プレイ時間: " + time, x + 5, y + delta, 0xffffff);
+                context.drawTextWithShadow(textRenderer, "プレイ時間: " + time, x + 5, y + delta, 0xffffffff);
                 delta += 10;
             }
 
             // team
             if (showTeam) {
-                if (showReward || showExp || showPlayTime) delta += 10;
-                InGameHud.drawTextWithShadow(stack, textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", x + 5, y + delta, 0xffffff);
+                if (showReward || showPlayTime) delta += 10;
+                context.drawTextWithShadow(textRenderer, "生存者: " + KzeUtils.getSurvivorCount() + "人", x + 5, y + delta, 0xffffffff);
                 delta += 10;
-                InGameHud.drawTextWithShadow(stack, textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", x + 5, y + delta, 0xffffff);
+                context.drawTextWithShadow(textRenderer, "ゾンビ: " + KzeUtils.getZombieCount() + "人", x + 5, y + delta, 0xffffffff);
 
                 delta += 10;
                 if (showBonus) delta += 10;
@@ -138,10 +124,10 @@ public class PlayInfoModule implements Module {
 
             // bonus
             if (showBonus) {
-                if ((showReward || showExp || showPlayTime) && !showTeam) delta += 10;
-                InGameHud.drawTextWithShadow(stack, textRenderer, "防衛: " + Math.min(defenseBonus, 10000) + "円 (" + mainDefenseCount + ", " + subDefenseCount + ")", x + 5, y + delta, 0xffffff);
+                if ((showReward || showPlayTime) && !showTeam) delta += 10;
+                context.drawTextWithShadow(textRenderer, "防衛: " + Math.min(defenseBonus, 10000) + "円 (" + mainDefenseCount + ", " + subDefenseCount + ")", x + 5, y + delta, 0xffffffff);
                 delta += 10;
-                InGameHud.drawTextWithShadow(stack, textRenderer, "被弾: " + Math.min(hitBonus, 4000) + "円 (" + hitCount + ")", x + 5, y + delta, 0xffffff);
+                context.drawTextWithShadow(textRenderer, "被弾: " + Math.min(hitBonus, 4000) + "円 (" + hitCount + ")", x + 5, y + delta, 0xffffffff);
                 delta += 10;
             }
 
@@ -160,7 +146,7 @@ public class PlayInfoModule implements Module {
 
         @Override
         public boolean isVisible() {
-            return showReward || showExp || showPlayTime || showTeam || showBonus;
+            return showReward || showPlayTime || showTeam || showBonus;
         }
 
         @Override

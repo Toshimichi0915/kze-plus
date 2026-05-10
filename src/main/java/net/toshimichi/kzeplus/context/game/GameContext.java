@@ -10,10 +10,8 @@ public class GameContext {
     private final long startedAt;
     private long endedAt;
     private boolean ended;
-    private boolean humanWin;
 
     private int reward;
-    private int exp;
 
     private int defenseBonus;
     private int hitBonus;

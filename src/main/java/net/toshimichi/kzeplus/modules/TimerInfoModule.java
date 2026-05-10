@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.util.math.MatrixStack;
 import net.toshimichi.kzeplus.KzePlus;
 import net.toshimichi.kzeplus.context.widget.Widget;
 import net.toshimichi.kzeplus.events.ChatEvent;
@@ -68,7 +67,7 @@ public class TimerInfoModule implements Module {
 
         return player.networkHandler.getPlayerList()
                 .stream()
-                .map(entry -> entry.getProfile().getName())
+                .map(entry -> entry.getProfile().name())
                 .reduce(text, (s, name) -> s.replace(name, ""));
     }
 
@@ -157,12 +156,12 @@ public class TimerInfoModule implements Module {
         }
 
         @Override
-        public void render(int x, int y, MatrixStack stack, float tickDelta) {
+        public void render(int x, int y, DrawContext context, float tickDelta) {
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-            InGameHud.fill(stack, x, y, x + getWidth(), y + getHeight(), 0x80000000);
+            context.fill(x, y, x + getWidth(), y + getHeight(), 0x80000000);
             for (Timer timer : target) {
-                InGameHud.drawTextWithShadow(stack, textRenderer, timer.toString(), x + 5, y + 5 + target.indexOf(timer) * 10, 0xFFFFFF);
+                context.drawTextWithShadow(textRenderer, timer.toString(), x + 5, y + 5 + target.indexOf(timer) * 10, 0xffffffff);
             }
         }
 

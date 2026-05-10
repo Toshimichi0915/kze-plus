@@ -40,7 +40,7 @@ public class KzeUtils {
 
         return (int) player.networkHandler.getListedPlayerListEntries()
                 .stream()
-                .filter(entry -> team.getPlayerList().contains(entry.getProfile().getName()))
+                .filter(entry -> team.getPlayerList().contains(entry.getProfile().name()))
                 .count();
     }
 

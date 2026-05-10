@@ -23,8 +23,5 @@ public class MixinGameOptions {
         System.arraycopy(allKeys, 0, newAllKeys, 0, allKeys.length);
         System.arraycopy(toAdd, 0, newAllKeys, allKeys.length, toAdd.length);
         allKeys = newAllKeys;
-
-        // add new categories
-        KeyBinding.CATEGORY_ORDER_MAP.put(KzePlus.KZE_CATEGORY, 10000);
     }
 }
